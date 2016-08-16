@@ -30,6 +30,7 @@ public abstract class Card {
 	 */
 	public void setEliminated(boolean b) {
 		if(!eliminated) {
+			// hello
 			eliminated = b;
 		}
 	}
