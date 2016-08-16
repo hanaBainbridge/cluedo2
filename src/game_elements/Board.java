@@ -1,3 +1,4 @@
+//hi connor
 package game_elements;
 
 import java.awt.Point;
