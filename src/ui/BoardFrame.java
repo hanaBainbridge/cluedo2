@@ -1,7 +1,7 @@
 package ui;
 
 import javax.swing.JFrame;
-
+//hi hi hi hi hi hi hi hi hi hi hi hi 
 public class BoardFrame {
 	// Creates the window that will house the two panels.
 	private JFrame window = new JFrame(); 
