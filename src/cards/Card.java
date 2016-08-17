@@ -12,6 +12,7 @@ public abstract class Card {
 	protected boolean eliminated;
 	protected ImageIcon image;
 	
+	// hhkjhlkhjlk
 	/**
 	 * Returns the name of the item
 	 * @return String, item's name.

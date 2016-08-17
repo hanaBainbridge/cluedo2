@@ -14,7 +14,16 @@ public class BoardFrame {
 		window.getContentPane().add(startPanel); 
 		window.pack();
 		window.setVisible(true);
+		window.setResizable(false);
 		
+		while(!startPanel.startGame()) {
+			System.out.println();
+		}
+		
+		window.getContentPane().remove(startPanel);
+		window.getContentPane().add(boardPanel);
+		window.revalidate();
+		window.repaint();
 	}
 	
 	public static void main(String[] args) {new BoardFrame();}
