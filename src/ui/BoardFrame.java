@@ -1,7 +1,7 @@
 package ui;
 
 import javax.swing.JFrame;
-//hi hi hi hi hi hi hi hi hi hi hi hi 
+// some shit 
 
 public class BoardFrame {
 	
