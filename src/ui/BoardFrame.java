@@ -2,7 +2,9 @@ package ui;
 
 import javax.swing.JFrame;
 //hi hi hi hi hi hi hi hi hi hi hi hi 
+
 public class BoardFrame {
+	
 	// Creates the window that will house the two panels.
 	private JFrame window = new JFrame(); 
 	// Creates the two panels that the game uses 
@@ -10,6 +12,7 @@ public class BoardFrame {
 	private BoardPanel boardPanel = new BoardPanel();
 	
 	public BoardFrame() {
+	   System.out.println();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().add(startPanel); 
 		window.pack();
