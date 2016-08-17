@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 /**
  * Note that this class is a base for all the subclasses of card in Cluedo.
- * @author Connor
+ * @author Connor && invisible thing
  *
  */
 public abstract class Card {
@@ -12,7 +12,6 @@ public abstract class Card {
 	protected boolean eliminated;
 	protected ImageIcon image;
 	
-	// hhkjhlkhjlk
 	/**
 	 * Returns the name of the item
 	 * @return String, item's name.
