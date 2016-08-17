@@ -1,6 +1,7 @@
 package cards;
 
 import javax.swing.ImageIcon;
+
 /**
  * Note that this class is a base for all the subclasses of card in Cluedo.
  * @author Connor
