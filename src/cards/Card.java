@@ -4,9 +4,10 @@ import javax.swing.ImageIcon;
 
 /**
  * Note that this class is a base for all the subclasses of card in Cluedo.
- * @author Connor && invisible thing
+ * @author Connor 
  *
  */
+// do you like me eclispe 
 public abstract class Card {
 	protected String name;
 	protected boolean eliminated;
