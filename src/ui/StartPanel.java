@@ -1,9 +1,9 @@
 package ui;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
@@ -26,30 +26,25 @@ public class StartPanel extends JPanel {
 			+ "which consists of a character, weapon and room.\n\nIf the suggestion is correct that player wins the game"
 			+ ", however if incorrect that player is \neliminated from the game and cannot make any more suggestions or accusations.");
 	private boolean startGame = false;
+	private GridBagConstraints gbc = new GridBagConstraints();
+	private Insets insets = new Insets(0, 0, 100, 0); // The padding between each component.
 	
 	public StartPanel() {
-		setLayout(null);
-		setPreferredSize(new Dimension(600,600));
-		setBackground(Color.WHITE);
+		setLayout(new GridBagLayout());
+		gbc.anchor = GridBagConstraints.CENTER; // All components will be aligned with the centre.
+		gbc.insets = insets; // Sets the space between all components.
+		gbc.gridx = 1; // States what row we are working in.
+		gbc.gridy = 0; // States what column we are working in.
+		setPreferredSize(new Dimension(600,600)); // Sets the size of the panel.
+		setBackground(Color.GRAY);
 		title.setFont(new Font("Arial", Font.BOLD, 32));
-		setUpComponent(title, 300, 50);
-		instructions.setBounds(50 + getInsets().left, 100, 500, 300);
-		add(instructions);
-		setUpComponent(startBtn, 300, 500);
-		startBtn.addActionListener(new BtnListener());
-	}
-	
-	/**
-	 * Sets up a component on the JPanel, using absolute positioning.
-	 * @param c, the component to be set up.
-	 * @param x, the x position that the component is to be placed at.
-	 * @param y, the y position that the component is to be placed at.
-	 */
-	private void setUpComponent(JComponent c, int x, int y) {
-		Dimension size = c.getPreferredSize();
-		Insets insets = this.getInsets();
-		c.setBounds(x + insets.left - size.width/2, y, size.width, size.height);
-		add(c);
+		add(title, gbc);
+		gbc.gridy ++; // Move down a row.
+		instructions.setEditable(false); 
+		add(instructions, gbc); 
+		gbc.gridy ++; // Move down a row.
+		add(startBtn, gbc);
+		startBtn.addActionListener(new BtnListener()); // Adds the action listener to the panel.
 	}
 	
 	public boolean startGame() {
