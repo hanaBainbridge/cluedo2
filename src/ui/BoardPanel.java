@@ -45,6 +45,8 @@ public class BoardPanel extends JPanel {
 		this.add(cardsPanel, gbc);
 		gbc.gridx ++;
 		this.add(actionsPanel, gbc);
+		
+		// We still need to draw the board.
 	}
 	
 	public void paintComponent(Graphics g) {

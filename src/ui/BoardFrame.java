@@ -29,6 +29,8 @@ public class BoardFrame {
 		
 		window.getContentPane().remove(startPanel);
 		window.getContentPane().add(boardPanel);
+		// Make dialog boxes appear here.
+		
 		window.revalidate();
 		window.repaint();
 	}
