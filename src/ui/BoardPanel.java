@@ -112,7 +112,7 @@ public class BoardPanel extends JPanel {
 		}
 		//determines action when roll button is pressed;
 		 rollBtn.addActionListener((ActionEvent e) -> {
-			 rollPressed =true;
+			 rollPressed = true;
 			 rolledNum=(int)(Math.random()*6)+1;
 			 this.repaint();
 			 }); 

@@ -28,11 +28,10 @@ public class BoardFrame {
 		window.pack();
 		window.setVisible(true);
 		window.setResizable(false);
-		
 		while(!startPanel.startGame()) {
-			System.out.println();
+			try{Thread.sleep(50);} // Need the program to sleep so that it can detect the button press.
+			catch(InterruptedException e) {throw new Error("Sleep interputed");}
 		}
-		
 		window.getContentPane().remove(startPanel);
 		boardPanel = new BoardPanel(getPlayerNum()); // Creates a new BoardPanel with the number of players that the user has entered.
 		window.getContentPane().add(boardPanel);
