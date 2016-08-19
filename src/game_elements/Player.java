@@ -1,10 +1,13 @@
 package game_elements;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
 
 import cards.Card;
 import ui.TextUI;
@@ -14,18 +17,18 @@ public class Player {
 	// Stores the names of the cards that this player has.
 	private Set<Card> playerCards = new HashSet<Card>();
 	// Stores the x and y coordinates of the player on the board.
-	private int xPos;
-	private int yPos;
+	private ImageIcon playerImage;
+	private Point playerCoor;
 	private String character;
 	// Keeps track of players who have been eliminated.
 	private boolean isPlaying;
 	// The room that the player is in.
 	private Room currentRoom;
 
-	public Player(int x, int y, String c) {
+	public Player(ImageIcon imageIcon, Point point, String c) {
 		character = c;
-		xPos = x;
-		yPos = y;
+		xPos = imageIcon;
+		yPos = point;
 		isPlaying = true;
 	}
 
@@ -65,14 +68,14 @@ public class Player {
 		}
 	}
 	/**
-	 * getter methods
-	 */
-	public int getX() {
-		return xPos;
-	}
-
-	public int getY() {
-		return yPos;
+	 * rolls the dice and returns 
+	 *FIX ME
+	 * */
+	public ArrayList<Integer> rollDice(){
+		ArrayList<Integer> values=new ArrayList<Integer>();
+		values.add((int)(Math.random()*6)+1);
+		values.add((int)(Math.random()*6)+1);
+		return values;
 	}
 
 	/**
@@ -104,11 +107,24 @@ public class Player {
 	
 	public void setHand(Set<Card> cards) {playerCards = cards;}
 	
-	public void setPosition(int x, int y) {
-		xPos = x;
-		yPos = y;
+	/**
+	 * will handle the logic of the players turn 
+	 * @return boolean value to determine if the player is still playing 
+	 * the game 
+	 * */
+	public boolean playTurn(){
+		return false;
+	}
+	/**
+	 * getters for player image and player cooranates
+	 * */
+	public ImageIcon getPlayerImage() {
+		return playerImage;
 	}
 
+		public Point getPlayerCoor() {
+		return playerCoor;
+	}
 	/**
 	 * moves the players cooradinates on the board
 	 */
