@@ -18,7 +18,8 @@ public class BoardFrame {
 	// Creates the two panels that the game uses 
 	private StartPanel startPanel = new StartPanel();
 	private BoardPanel boardPanel = null;
-	
+	//number of players in the game
+	private int numPlayers;
 	public BoardFrame() {
 	   System.out.println();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,21 +44,21 @@ public class BoardFrame {
 	 * Asks the user for the number of players that are playing the game.
 	 * @return int, the number of players
 	 */
-	private int getPlayerNum() {
+	public int getPlayerNum() {
 		try {
 			Object[] possiblities = new Object[] {"3","4","5","6"};
 			Object selectedValue = JOptionPane.showInputDialog(null,
 					"Select number of players", "Number of players",
 					JOptionPane.INFORMATION_MESSAGE, null,
 					possiblities, possiblities[0]); 
-			return Integer.parseInt(selectedValue.toString());
+		     numPlayers=Integer.parseInt(selectedValue.toString());
+			return numPlayers;
 		}
 		catch(NullPointerException e) {
 			JOptionPane.showMessageDialog(null, "Game will now crash you have not entered any information for a field", "Fatal error!", JOptionPane.ERROR_MESSAGE);
 			throw new Error("You crashed the game dumbass");
 		}
 	}
-	
 	
 	/**
 	 * Method that creates a menu for the JFrame.
