@@ -16,8 +16,9 @@ public class Player {
 
 	// Stores the names of the cards that this player has.
 	private Set<Card> playerCards = new HashSet<Card>();
-	// Stores the x and y coordinates of the player on the board.
+	
 	private ImageIcon playerImage;
+	// Stores the x and y coordinates of the player on the board.
 	private Point playerCoor;
 	private String character;
 	// Keeps track of players who have been eliminated.
@@ -27,8 +28,8 @@ public class Player {
 
 	public Player(ImageIcon imageIcon, Point point, String c) {
 		character = c;
-		xPos = imageIcon;
-		yPos = point;
+		playerImage = imageIcon;
+		playerCoor = point;
 		isPlaying = true;
 	}
 
@@ -68,13 +69,13 @@ public class Player {
 		}
 	}
 	/**
-	 * rolls the dice and returns 
-	 *FIX ME
+	 * rolls the dice and returns two random numbers as an arraylist 
+	 *
 	 * */
-	public ArrayList<Integer> rollDice(){
-		ArrayList<Integer> values=new ArrayList<Integer>();
-		values.add((int)(Math.random()*6)+1);
-		values.add((int)(Math.random()*6)+1);
+	public int[] rollDice(){
+		int[] values= new int[2];
+		values[0]=(int)(Math.random()*6)+1;
+		values[1]=(int)(Math.random()*6)+1;
 		return values;
 	}
 
@@ -102,7 +103,9 @@ public class Player {
 	public void setRoom(Room room) {
 		currentRoom = room;
 	}
-	
+	/**
+	 * @return the players current hand 
+	 * */
 	public Set<Card> getHand() {return playerCards;}
 	
 	public void setHand(Set<Card> cards) {playerCards = cards;}
