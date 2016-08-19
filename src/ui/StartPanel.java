@@ -44,27 +44,11 @@ public class StartPanel extends JPanel {
 		add(instructions, gbc); 
 		gbc.gridy ++; // Move down a row.
 		add(startBtn, gbc);
-		startBtn.addActionListener(new BtnListener()); // Adds the action listener to the panel.
+		startBtn.addActionListener((ActionEvent e) -> {startGame = true;}); // Adds the action listener to the panel.
 	}
 	
 	public boolean startGame() {
 		return startGame;
-	}
-
-	/**
-	 * Class that listens for the start button to be pressed.
-	 * @author Connor
-	 *
-	 */
-	private class BtnListener implements ActionListener {
-
-		/**
-		 * Method that sets the boolean value when button is pressed, used to start game.
-		 */
-		public void actionPerformed(ActionEvent arg0) {
-			startGame = true;
-		}
-		
 	}
 	
 	public static void main(String[] args) {new StartPanel();}

@@ -32,8 +32,8 @@ public class Board {
 	 * 
 	 * @param playerNum
 	 */
-	public Board(int playerNum) {
-		players = new ArrayList<Player>();
+	public Board(ArrayList<Player> p) {
+		players = p;
 		gameNotWon = true;
 
 		// Used to make the constructor shorter.
@@ -49,15 +49,14 @@ public class Board {
 
 		// Shuffles the cards.
 		Collections.shuffle(mixedCards); // Randomizes the cards.
-		int cardCount = (int) mixedCards.size() / playerNum; // Decides how many cards each player will get.
-		int remainder = mixedCards.size() % (cardCount * playerNum); // Gets the number of cards that are left																		// over.
+		int cardCount = (int) mixedCards.size() / players.size(); // Decides how many cards each player will get.
+		int remainder = mixedCards.size() % (cardCount * players.size()); // Gets the number of cards that are left																		// over.
 
-		for (int i = 0; i < playerNum; i++) {
+		for (int i = 0; i < players.size(); i++) {
 			Set<String> playerCards = new HashSet<String>();
 			for (int j = 0; j < cardCount; j++) {
 				playerCards.add(mixedCards.remove(0)); // Adds the card to the player's hand but also removes it so no player gets the same card.
 			}
-			players.add(new Player(startingPos.get(i).x, startingPos.get(i).y, playerCards)); // Creates a new Player.
 			System.out.println();
 		}
 		
@@ -184,14 +183,8 @@ public class Board {
 	 * @param p, the player whos turn it is.
 	 */
 	private void playTurn(Player p) {
-		System.out.println("Player " + (players.indexOf(p) + 1) + " turn!");
-		displayBoard();
 		// If the player is in a room with a staircase.
 		if (p.getRoom() != null && p.getRoom().hasStairCase()) {
-			System.out.println("You are in a room with a staircase:\n"
-					+ "1. Use staircase to "
-					+ p.getRoom().getConnectedRoom().toString() + "\n"
-					+ "2. Roll the dice\n");
 			int playerInput = TextUI.checkInput(2);
 			// Player wants to use the staircase.
 			if (playerInput == 1) {
@@ -201,14 +194,11 @@ public class Board {
 			// Player wants to roll the dice.
 			else {
 				int diceRoll = rollDice();
-				System.out.println("Player has rolled a" + diceRoll);
 				// Show available exits.
 				ArrayList<Point> entryPoints = p.getRoom().getEntryPoints();// for convience.
 
 				for (int i = 0; i < entryPoints.size(); i++) {
-					System.out.print("Exit:" + (i + 1) + "\t");
-					System.out.print("x:" + (int) entryPoints.get(i).getX() + ":\t");
-					System.out.println("Y:" + (int) entryPoints.get(i).getY());
+					// Print the exits
 				}
 				// Ask the player to select an exit
 				int choice = TextUI.checkInput(entryPoints.size()) - 1;
@@ -230,9 +220,7 @@ public class Board {
 			ArrayList<Point> entryPoints = p.getRoom().getEntryPoints();// for convience.
 
 			for (int i = 0; i < entryPoints.size(); i++) {
-				System.out.print("Exit:" + (i + 1) + "\t");
-				System.out.print("x:" + (int) entryPoints.get(i).getX() + ":\t");
-				System.out.println("Y:" + (int) entryPoints.get(i).getY());
+				// Print the exits
 			}
 			// Ask the player to select an exit
 			int choice = TextUI.checkInput(entryPoints.size()) - 1;
@@ -248,7 +236,6 @@ public class Board {
 		// Player is in the hallways.
 		else {
 			int diceRoll = rollDice(); // Roll the dice.
-			System.out.println("Player has rolled a " + diceRoll);
 			move(diceRoll, p, false); // Call the move method with the dice roll.
 		}
 	}

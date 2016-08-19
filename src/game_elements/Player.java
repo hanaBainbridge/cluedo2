@@ -6,22 +6,26 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import cards.Card;
 import ui.TextUI;
 
 public class Player {
 
 	// Stores the names of the cards that this player has.
-	private Set<String> playerCards = new HashSet<String>();
+	private Set<Card> playerCards = new HashSet<Card>();
 	// Stores the x and y coordinates of the player on the board.
 	private int xPos;
 	private int yPos;
+	private String name;
+	private String character;
 	// Keeps track of players who have been eliminated.
 	private boolean isPlaying;
 	// The room that the player is in.
 	private Room currentRoom;
 
-	public Player(int x, int y, Set<String> cards) {
-		playerCards = cards;
+	public Player(int x, int y, String n, String c) {
+		name = n;
+		character = c;
 		xPos = x;
 		yPos = y;
 		isPlaying = true;
@@ -36,34 +40,6 @@ public class Player {
 	 */
 	public List<String> makeAccusation(ArrayList<String> charaters, ArrayList<String> weapons,
 			ArrayList<String> rooms) {
-		// the player must be in a room to make an auucstion
-		if (this.currentRoom != null) {
-			// asks the player to select a character from the list (the number).
-			System.out.println("possible charater choices are:");
-			for (int i = 0; i < charaters.size(); i ++) {
-				System.out.println((i+1) + ": " + charaters.get(i));
-			}
-			System.out.println();
-			int charater = TextUI.checkInput(charaters.size()) - 1;
-
-			// selecting a weapon for the accusation
-			System.out.println("Possible weapon choices are:");
-			for (int i = 0; i < weapons.size(); i ++) {
-				System.out.println((i+1) + ": " + weapons.get(i));
-			}
-			System.out.println();
-			int weapon = TextUI.checkInput(weapons.size()) - 1;
-
-			// selecting a room for the accusation
-			System.out.println("Possible room choices are:");
-			for (int i = 0; i < rooms.size(); i ++) {
-				System.out.println((i+1) + ": " + rooms.get(i));
-			}
-			System.out.println();
-			int room = TextUI.checkInput(rooms.size()) - 1;
-			List<String> ans = Arrays.asList(charaters.get(charater), weapons.get(weapon), rooms.get(room));
-			return ans;
-		}
 		return null;
 	}
 
@@ -76,23 +52,6 @@ public class Player {
 	 */
 	public List<String> makeSuggestion(ArrayList<String> characters, ArrayList<String> weapons, Room currentRoom) {
 		if (this.currentRoom != null && this.isPlaying) {
-			// asks the player to select a character from the list (the number).
-			System.out.println("possible charater choices are:");
-			for (int i = 0; i < characters.size(); i++) {
-				System.out.println((i+1) + ": " + characters.get(i));
-			}
-			System.out.println();
-			int character = TextUI.checkInput(characters.size()) - 1;
-
-			// selecting a weapon for the accusation
-			System.out.println("Possible weapon choices are:");
-			for (int i = 0; i < weapons.size(); i ++) {
-				System.out.println((i+1) + ": " + weapons.get(i));
-			}
-			System.out.println();
-			int weapon = TextUI.checkInput(weapons.size()) - 1;
-			List<String> ans = Arrays.asList(characters.get(character), weapons.get(weapon), currentRoom.toString());
-			return ans;
 
 		}
 		return null;
@@ -103,7 +62,7 @@ public class Player {
 	 */
 	public void displayHand() {
 		System.out.println("Player has the following cards in their hand...");
-		for(String card: playerCards) {
+		for(Card card: playerCards) {
 			System.out.println(card);
 		}
 	}
@@ -143,6 +102,10 @@ public class Player {
 		currentRoom = room;
 	}
 	
+	public Set<Card> getHand() {return playerCards;}
+	
+	public void setHand(Set<Card> cards) {playerCards = cards;}
+	
 	public void setPosition(int x, int y) {
 		xPos = x;
 		yPos = y;
@@ -175,9 +138,9 @@ public class Player {
 	 * @param cards, the suggestion cards
 	 * @return the suggestion cards that the player has in their hand.
 	 */
-	public List<String> getMatchingCards(List<String> suggestionCards) {
-		List<String> containedCards = new ArrayList<String>();
-		for(String card: playerCards) {
+	public List<Card> getMatchingCards(List<Card> suggestionCards) {
+		List<Card> containedCards = new ArrayList<Card>();
+		for(Card card: playerCards) {
 			if(suggestionCards.contains(card)) {
 				containedCards.add(card); // Adds the card if the player has the card in their hand.
 			}
