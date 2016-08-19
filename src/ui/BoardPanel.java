@@ -1,5 +1,6 @@
 package ui;
 
+import game_elements.Board;
 import game_elements.Player;
 
 import java.awt.Color;
@@ -24,36 +25,25 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel {
-	private GridBagConstraints gbc = new GridBagConstraints(); // Defines
-																// properties
-																// about
-																// component
-																// spacing.
-	private JPanel actionsPanel = new JPanel(); // The action buttons will be
-												// stored here.
-	private JPanel cardsPanel = new JPanel(); // This panel shows the player's
-												// cards.
+	private GridBagConstraints gbc = new GridBagConstraints(); // Defines properties about component spacing.
+	private JPanel actionsPanel = new JPanel(); // The action buttons will be stored here.
+	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards.
 	private JButton suggestionBtn = new JButton("Make suggestion");
 	private JButton accusationBtn = new JButton("Make accusation");
 	private JButton rollBtn = new JButton("Roll dice");
-	private Insets insets = new Insets(0, 0, 0, 0); // Change later to a spacing
-													// more appropreite.
+	private Insets insets = new Insets(0, 0, 0, 0); // Change later to a spacing more appropreite.
 	private int playerNum;
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Object> characters = new ArrayList<Object>();
-	private ImageIcon board = new ImageIcon("board.png");
+	private ImageIcon boardImage = new ImageIcon("board.png");
 	// lists to store player and dice images and the players current corrants
-	
 	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>();
 	private ArrayList<ImageIcon> diceIcons= new ArrayList<ImageIcon>();
 	private ArrayList<Point> playersCoor= new ArrayList<Point>();
 	private boolean rollPressed = false;
-	
-	private int rolledNum;
+	private int[] rolledNums;
+	private Board board;
 
-	
-   
-	
 	/**
 	 * The constructor for the Board panel that set up the GUI for the actual
 	 * game.
@@ -62,21 +52,7 @@ public class BoardPanel extends JPanel {
 	 *            the number of players.
 	 */
 	public BoardPanel(int num) {
-		
 		intaliseArrays();
-		playerIcons.add(new ImageIcon("p1.png"));
-		playerIcons.add(new ImageIcon("p2.png"));
-		playerIcons.add(new ImageIcon("p3.png"));
-		playerIcons.add(new ImageIcon("p4.png"));
-		playerIcons.add(new ImageIcon("p5.png"));
-		playerIcons.add(new ImageIcon("p6.png"));
-		
-		playersCoor.add(new Point(225,5));
-		playersCoor.add(new Point(365,5));
-		playersCoor.add(new Point(575,95));
-		playersCoor.add(new Point(575,305));
-		playersCoor.add(new Point(175,380));
-		playersCoor.add(new Point(11,270));
 		
 		characters.addAll(Arrays.asList("Miss Scarlet", "Professor Plum", "Colonel Mustard", "Mrs White",
 				"Reverend Green", "Mrs Peacock"));
@@ -96,7 +72,6 @@ public class BoardPanel extends JPanel {
 		actionsPanel.add(suggestionBtn);
 		actionsPanel.add(accusationBtn);
 		actionsPanel.add(rollBtn);
-
 		cardsPanel.setPreferredSize(new Dimension(500, 210));
 		cardsPanel.setBackground(Color.GRAY);
 
@@ -110,10 +85,12 @@ public class BoardPanel extends JPanel {
 		for (int i = 0; i < playerNum; i++) {
 			players.add(createNewPlayer(i + 1));
 		}
+		board = new Board(players);
+		
 		//determines action when roll button is pressed;
 		 rollBtn.addActionListener((ActionEvent e) -> {
 			 rollPressed = true;
-			 rolledNum=(int)(Math.random()*6)+1;
+			 rolledNums = board.getCurrentPlayer().rollDice();
 			 this.repaint();
 			 }); 
 	}
@@ -124,7 +101,7 @@ public class BoardPanel extends JPanel {
 					"Please chose a character for player " + index, "Character selection",
 					JOptionPane.INFORMATION_MESSAGE, null, characters.toArray(), characters.get(0));
 			characters.remove(character);
-			return new Player(0, 0, character);
+			return new Player(playerIcons.get(index - 1), playersCoor.get(index - 1), character);
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(null, "Game will now crash you have not entered any information for a field",
 					"Fatal error!", JOptionPane.ERROR_MESSAGE);
@@ -137,18 +114,20 @@ public class BoardPanel extends JPanel {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawLine(0, 400, 650, 400);
-		g.drawLine(500, 400, 500, 650);
 		g.setColor(Color.GRAY);
 		g.fillRect(0, 400, 650, 250);
-		board.paintIcon(this, g, 10, 10);
+		boardImage.paintIcon(this, g, 10, 10);
 		paintPlayers(g);
+		paintDice(g);
+	}
+
+	private void paintDice(Graphics g) {
 		if(rollPressed){
-			diceIcons.get((rolledNum-1)).paintIcon(cardsPanel, g, 130, 380);
+			diceIcons.get((rolledNums[0]-1)).paintIcon(actionsPanel, g, 500, 375);
+			diceIcons.get((rolledNums[1]-1)).paintIcon(actionsPanel, g, 500, 375);
 			rollPressed=false;
 		}
 	}
-
 	private void paintPlayers(Graphics g) {
 		
 		for(int i=0; i<playerNum; i++){
@@ -169,12 +148,12 @@ public class BoardPanel extends JPanel {
   public void intaliseArrays(){
 	  	
 	    // player icons
-		playerIcons.add(new ImageIcon("p1.png"));
-		playerIcons.add(new ImageIcon("p2.png"));
-		playerIcons.add(new ImageIcon("p3.png"));
-		playerIcons.add(new ImageIcon("p4.png"));
-		playerIcons.add(new ImageIcon("p5.png"));
-		playerIcons.add(new ImageIcon("p6.png"));
+		playerIcons.add(new ImageIcon("p1.jpg"));
+		playerIcons.add(new ImageIcon("p2.jpg"));
+		playerIcons.add(new ImageIcon("p3.jpg"));
+		playerIcons.add(new ImageIcon("p4.jpg"));
+		playerIcons.add(new ImageIcon("p5.jpg"));
+		playerIcons.add(new ImageIcon("p6.jpg"));
 		
 		//player corrants
 		playersCoor.add(new Point(225,5));
