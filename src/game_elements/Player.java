@@ -16,15 +16,13 @@ public class Player {
 	// Stores the x and y coordinates of the player on the board.
 	private int xPos;
 	private int yPos;
-	private String name;
 	private String character;
 	// Keeps track of players who have been eliminated.
 	private boolean isPlaying;
 	// The room that the player is in.
 	private Room currentRoom;
 
-	public Player(int x, int y, String n, String c) {
-		name = n;
+	public Player(int x, int y, String c) {
 		character = c;
 		xPos = x;
 		yPos = y;

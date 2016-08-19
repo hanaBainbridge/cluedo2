@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +31,7 @@ public class BoardPanel extends JPanel {
 	private int playerNum;
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Object> characters = new ArrayList<Object>();
+	private ImageIcon board = new ImageIcon("board.png");
 	
 	/**
 	 * The constructor for the Board panel that set up the GUI for the actual game.
@@ -72,11 +74,10 @@ public class BoardPanel extends JPanel {
 	
 	private Player createNewPlayer(int index) {
 		try {
-			String name = JOptionPane.showInputDialog("Please enter a name for player " + index);
-			String character = (String)JOptionPane.showInputDialog(null, "Please chose a character", "Character selection", 
+			String character = (String)JOptionPane.showInputDialog(null, "Please chose a character for player " + index, "Character selection", 
 					JOptionPane.INFORMATION_MESSAGE, null, characters.toArray(), characters.get(0));
 		characters.remove(character);
-		return new Player(0,0,name,character);
+		return new Player(0, 0 ,character);
 		}
 		catch(NullPointerException e) {
 			JOptionPane.showMessageDialog(null, "Game will now crash you have not entered any information for a field", "Fatal error!", JOptionPane.ERROR_MESSAGE);
@@ -90,6 +91,7 @@ public class BoardPanel extends JPanel {
 		g.drawLine(500, 400, 500, 650);
 		g.setColor(Color.GRAY);
 		g.fillRect(0, 400, 650, 250);
+		board.paintIcon(this, g, 10, 10);
 	}
 	
 
