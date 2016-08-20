@@ -10,9 +10,10 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import cards.Card;
+import ui.BoardPanel;
 import ui.TextUI;
 
-public class Player {
+public class Player{
 
 	// Stores the names of the cards that this player has.
 	private Set<Card> playerCards = new HashSet<Card>();
@@ -165,4 +166,6 @@ public class Player {
 		if(containedCards.size() != 0) {return containedCards;} // Return the cards
 		return null; // Return null if player has no cards.
 	}
+
+  
 }

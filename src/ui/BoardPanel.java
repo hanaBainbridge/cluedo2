@@ -2,10 +2,10 @@ package ui;
 
 import game_elements.Board;
 import game_elements.Player;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -104,6 +105,32 @@ public class BoardPanel extends JPanel {
 			players.add(createNewPlayer(i + 1));
 		}
 		board = new Board(players);
+		// mouselistener for moving the plaeyrs 
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				// System.out.println("a");
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				// System.out.println("b");
+				Player currentPlayer = board.getCurrentPlayer();
+				if (currentPlayer != null) {
+					int index = playerIcons.indexOf(currentPlayer.getPlayerImage());
+					
+					// check vaild move
+					boolean vaildMove=isVaildMove(e.getPoint());
+					if (vaildMove) {
+						playersCoor.get(index).setLocation(e.getPoint());
+						repaint();
+					}
+				}
+			}
+
+			private boolean isVaildMove(Point point) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 	}
 
 	private Player createNewPlayer(int index) {
@@ -119,7 +146,6 @@ public class BoardPanel extends JPanel {
 			throw new Error();
 		}
 	}
-
 	/**
 	 * p
 	 */
@@ -135,7 +161,7 @@ public class BoardPanel extends JPanel {
 	
 	private void paintDice(Graphics g) {
 		if (roll) {
-			System.out.println("F");
+			//System.out.println("F");
 			if(dice1 != null) {actionsPanel.remove(dice1);}
 			if(dice2 != null) {actionsPanel.remove(dice2);}
 			dice1 = new JLabel(diceIcons.get(rolledNums[0]-1));
@@ -153,7 +179,7 @@ public class BoardPanel extends JPanel {
 			playerIcons.get(i).paintIcon(this, g, (int)playersCoor.get(i).getX(),(int)playersCoor.get(i).getY());
 		}		
 	}
-
+	
 	public static void main(String[] args) {
 		new BoardPanel(3);
 	}
@@ -167,7 +193,7 @@ public class BoardPanel extends JPanel {
   public void intaliseArrays(){
 	  	
 	    // player icons
-		playerIcons.add(new ImageIcon("p1.jpg"));
+		playerIcons.add(new ImageIcon("p1.png"));
 		playerIcons.add(new ImageIcon("p2.jpg"));
 		playerIcons.add(new ImageIcon("p3.jpg"));
 		playerIcons.add(new ImageIcon("p4.jpg"));
@@ -181,5 +207,5 @@ public class BoardPanel extends JPanel {
 		playersCoor.add(new Point(575,305));
 		playersCoor.add(new Point(175,380));
 		playersCoor.add(new Point(11,270));
-  }	
+  }
 }

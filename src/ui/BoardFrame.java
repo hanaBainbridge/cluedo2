@@ -5,6 +5,8 @@ import game_elements.Player;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JDialog;
@@ -68,15 +70,40 @@ public class BoardFrame {
 		MenuBar menuBar = new MenuBar();
 		Menu fileMenu = new Menu("File");
 		Menu helpMenu = new Menu("Help");
-		MenuItem item = new MenuItem("Restart");
-		fileMenu.add(item);
-		item = new MenuItem("Exit");
-		fileMenu.add(item);
-		item = new MenuItem("How to play");
-		helpMenu.add(item);
+		MenuItem restart = new MenuItem("Restart");
+		fileMenu.add(restart);
+		MenuItem e = new MenuItem("Exit");
+		fileMenu.add(e);
+		MenuItem howToPlay = new MenuItem("How to play");
+		helpMenu.add(howToPlay);
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 		window.setMenuBar(menuBar);
+		// setting actions for when a menu item is pressed
+				 e.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						window.dispose();
+					}
+				});
+				howToPlay.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						String message="To play the game click the roll dice button and"
+								+ "move the ammount that the dice tell you."
+								+ "You move by clicking right squuare to the new locaiton.";
+						 JOptionPane.showMessageDialog(null, message, "help", 1);
+					}
+				});
+				restart.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+					 	window.getContentPane().remove(boardPanel);
+						window.getContentPane().add(startPanel);
+						window.revalidate();
+						window.repaint();
+					}
+				});
 	}
 	
 	public static void main(String[] args) {new BoardFrame();}
