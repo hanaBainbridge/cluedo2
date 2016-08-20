@@ -90,8 +90,8 @@ public class BoardFrame {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						String message="To play the game click the roll dice button and"
-								+ "move the ammount that the dice tell you."
-								+ "You move by clicking right squuare to the new locaiton.";
+								+ " move the ammount that the dice tell you."
+								+ "You move by clicking right square to the new locaiton.";
 						 JOptionPane.showMessageDialog(null, message, "help", 1);
 					}
 				});
