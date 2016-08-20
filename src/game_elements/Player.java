@@ -134,6 +134,7 @@ public class Player {
 	public void movePlayer(String direction) {
 		switch (direction) {
 		case ("North"):
+			hKDShoklshdjlk
 			yPos--;
 			break;
 		case ("East"):
