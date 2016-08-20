@@ -26,11 +26,8 @@ import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel {
 	private GridBagConstraints gbc = new GridBagConstraints(); // Defines properties about component spacing.
-	private JPanel actionsPanel = new JPanel(); // The action buttons will be stored here.
-	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards.
-	private JButton suggestionBtn = new JButton("Make suggestion");
-	private JButton accusationBtn = new JButton("Make accusation");
-	private JButton rollBtn = new JButton("Roll dice");
+	private JPanel actionsPanel; // The action buttons will be stored here.
+	private JPanel cardsPanel = new CardsPanel(); // This panel shows the player's cards.
 	private Insets insets = new Insets(0, 0, 0, 0); // Change later to a spacing more appropreite.
 	private int playerNum;
 	private ArrayList<Player> players = new ArrayList<Player>();
@@ -38,10 +35,7 @@ public class BoardPanel extends JPanel {
 	private ImageIcon boardImage = new ImageIcon("board.png");
 	// lists to store player and dice images and the players current corrants
 	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>();
-	private ArrayList<ImageIcon> diceIcons= new ArrayList<ImageIcon>();
 	private ArrayList<Point> playersCoor= new ArrayList<Point>();
-	private boolean rollPressed = false;
-	private int[] rolledNums;
 	private Board board;
 
 	/**
@@ -67,17 +61,11 @@ public class BoardPanel extends JPanel {
 		this.setPreferredSize(new Dimension(600, 600));
 		this.setBackground(Color.WHITE);
 
-		actionsPanel.setPreferredSize(new Dimension(100, 210));
-		actionsPanel.setBackground(Color.GRAY);
-		actionsPanel.add(suggestionBtn);
-		actionsPanel.add(accusationBtn);
-		actionsPanel.add(rollBtn);
 		cardsPanel.setPreferredSize(new Dimension(500, 210));
 		cardsPanel.setBackground(Color.GRAY);
 
 		this.add(cardsPanel, gbc);
 		gbc.gridx++;
-		this.add(actionsPanel, gbc);
 
 		playerNum = num;
         
@@ -86,13 +74,8 @@ public class BoardPanel extends JPanel {
 			players.add(createNewPlayer(i + 1));
 		}
 		board = new Board(players);
-		
-		//determines action when roll button is pressed;
-		 rollBtn.addActionListener((ActionEvent e) -> {
-			 rollPressed = true;
-			 rolledNums = board.getCurrentPlayer().rollDice();
-			 this.repaint();
-			 }); 
+		actionsPanel = new ActionsPanel(board);
+		this.add(actionsPanel, gbc);
 	}
 
 	private Player createNewPlayer(int index) {
@@ -114,20 +97,13 @@ public class BoardPanel extends JPanel {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		actionsPanel.repaint();
 		g.setColor(Color.GRAY);
 		g.fillRect(0, 400, 650, 250);
 		boardImage.paintIcon(this, g, 10, 10);
 		paintPlayers(g);
-		paintDice(g);
 	}
-
-	private void paintDice(Graphics g) {
-		if(rollPressed){
-			diceIcons.get((rolledNums[0]-1)).paintIcon(actionsPanel, g, 500, 375);
-			diceIcons.get((rolledNums[1]-1)).paintIcon(actionsPanel, g, 500, 375);
-			rollPressed=false;
-		}
-	}
+	
 	private void paintPlayers(Graphics g) {
 		
 		for(int i=0; i<playerNum; i++){
@@ -162,13 +138,5 @@ public class BoardPanel extends JPanel {
 		playersCoor.add(new Point(575,305));
 		playersCoor.add(new Point(175,380));
 		playersCoor.add(new Point(11,270));
-		
-		//dice icons
-		diceIcons.add(new ImageIcon("d1.png"));
-		diceIcons.add(new ImageIcon("d2.png"));
-		diceIcons.add(new ImageIcon("d3.png"));
-		diceIcons.add(new ImageIcon("d4.png"));
-	    diceIcons.add(new ImageIcon("d5.png"));
-		diceIcons.add(new ImageIcon("d6.png"));
   }	
 }
