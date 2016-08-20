@@ -134,17 +134,16 @@ public class Player {
 	public void movePlayer(String direction) {
 		switch (direction) {
 		case ("North"):
-			hKDShoklshdjlk
-			yPos--;
+			playerCoor.setLocation(playerCoor.getX(), (playerCoor.getY()-1));
 			break;
 		case ("East"):
-			xPos++;
+			playerCoor.setLocation((playerCoor.getX()+1), playerCoor.getY());
 			break;
 		case ("South"):
-			yPos++;
+			playerCoor.setLocation(playerCoor.getX(), (playerCoor.getY()+1));
 			break;
 		case ("West"):
-			xPos--;
+			playerCoor.setLocation((playerCoor.getX()-1), playerCoor.getY());
 			break;
 		default:
 			break;
