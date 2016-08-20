@@ -29,7 +29,8 @@ public class BoardFrame {
 		window.setVisible(true);
 		window.setResizable(false);
 		while(!startPanel.startGame()) {
-			try{Thread.sleep(50);} // Need the program to sleep so that it can detect the button press.
+			try{
+				Thread.sleep(50);} // Need the program to sleep so that it can detect the button press.
 			catch(InterruptedException e) {throw new Error("Sleep interputed");}
 		}
 		window.getContentPane().remove(startPanel);
@@ -73,7 +74,6 @@ public class BoardFrame {
 		fileMenu.add(item);
 		item = new MenuItem("How to play");
 		helpMenu.add(item);
-		
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 		window.setMenuBar(menuBar);

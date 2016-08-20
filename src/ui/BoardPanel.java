@@ -26,8 +26,17 @@ import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel {
 	private GridBagConstraints gbc = new GridBagConstraints(); // Defines properties about component spacing.
-	private JPanel actionsPanel; // The action buttons will be stored here.
-	private JPanel cardsPanel = new CardsPanel(); // This panel shows the player's cards.
+	private JPanel actionsPanel = new JPanel(); // The action buttons will be stored here.
+	private JButton suggestionBtn = new JButton("Make suggestion");
+	private JButton accusationBtn = new JButton("Make Accusation");
+	private JButton rollBtn = new JButton("Roll Dice");
+	
+	private boolean roll = false;
+	private JLabel dice1 = null;
+	private JLabel dice2 = null;
+	private int[] rolledNums = null;
+	
+	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards.
 	private Insets insets = new Insets(0, 0, 0, 0); // Change later to a spacing more appropreite.
 	private int playerNum;
 	private ArrayList<Player> players = new ArrayList<Player>();
@@ -35,6 +44,7 @@ public class BoardPanel extends JPanel {
 	private ImageIcon boardImage = new ImageIcon("board.png");
 	// lists to store player and dice images and the players current corrants
 	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>();
+	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>();
 	private ArrayList<Point> playersCoor= new ArrayList<Point>();
 	private Board board;
 
@@ -63,9 +73,33 @@ public class BoardPanel extends JPanel {
 
 		cardsPanel.setPreferredSize(new Dimension(500, 210));
 		cardsPanel.setBackground(Color.GRAY);
+		actionsPanel.setPreferredSize(new Dimension(100, 210));
+		actionsPanel.setBackground(Color.GRAY);
+		actionsPanel.add(suggestionBtn);
+		// Button listener for suggestion goes here.
+		actionsPanel.add(accusationBtn);
+		// Button listener for accusation goes here.
+		actionsPanel.add(rollBtn);
+		rollBtn.addActionListener((ActionEvent e) -> {
+			rolledNums = board.getCurrentPlayer().rollDice();
+			try{
+				roll = true;
+				Thread.sleep(50);
+				this.repaint();
+				}
+			catch(InterruptedException er) {throw new Error("Error interrupted");}
+		});
+		
+		diceIcons.add(new ImageIcon("d1.png"));
+		diceIcons.add(new ImageIcon("d2.png"));
+		diceIcons.add(new ImageIcon("d3.png"));
+		diceIcons.add(new ImageIcon("d4.png"));
+		diceIcons.add(new ImageIcon("d5.png"));
+		diceIcons.add(new ImageIcon("d6.png"));
 
 		this.add(cardsPanel, gbc);
 		gbc.gridx++;
+		this.add(actionsPanel, gbc);
 
 		playerNum = num;
         
@@ -74,8 +108,6 @@ public class BoardPanel extends JPanel {
 			players.add(createNewPlayer(i + 1));
 		}
 		board = new Board(players);
-		actionsPanel = new ActionsPanel(board);
-		this.add(actionsPanel, gbc);
 	}
 
 	private Player createNewPlayer(int index) {
@@ -102,6 +134,21 @@ public class BoardPanel extends JPanel {
 		g.fillRect(0, 400, 650, 250);
 		boardImage.paintIcon(this, g, 10, 10);
 		paintPlayers(g);
+		paintDice(g);
+	}
+	
+	private void paintDice(Graphics g) {
+		if (roll) {
+			System.out.println("F");
+			if(dice1 != null) {actionsPanel.remove(dice1);}
+			if(dice2 != null) {actionsPanel.remove(dice2);}
+			dice1 = new JLabel(diceIcons.get(rolledNums[0]-1));
+			dice2 = new JLabel(diceIcons.get(rolledNums[1]-1));
+			actionsPanel.add(dice1);
+			actionsPanel.add(dice2);
+			this.revalidate();
+			roll = false;
+		}
 	}
 	
 	private void paintPlayers(Graphics g) {
