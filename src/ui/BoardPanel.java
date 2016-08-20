@@ -109,22 +109,32 @@ public class BoardPanel extends JPanel {
 			players.add(createNewPlayer(i + 1));
 		}
 		board = new Board(players);
-		
-		 addMouseListener(new MouseAdapter() {
-             public void mousePressed(MouseEvent e) {
-              // System.out.println("a");
-             }
-             public void mouseReleased(MouseEvent e) {
-            	// System.out.println("b");
-            	Player currentPlayer=board.getCurrentPlayer();
-            	if(currentPlayer!=null){
-            		int index=playerIcons.indexOf(currentPlayer.getPlayerImage());
-            		playersCoor.get(index).setLocation(e.getPoint());
-            		repaint();
-            	}
-            	
-             }
-         });
+		// mouselistener for moving the plaeyrs 
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				// System.out.println("a");
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				// System.out.println("b");
+				Player currentPlayer = board.getCurrentPlayer();
+				if (currentPlayer != null) {
+					int index = playerIcons.indexOf(currentPlayer.getPlayerImage());
+					
+					// check vaild move
+					boolean vaildMove=isVaildMove(e.getPoint());
+					if (vaildMove) {
+						playersCoor.get(index).setLocation(e.getPoint());
+						repaint();
+					}
+				}
+			}
+
+			private boolean isVaildMove(Point point) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 	}
 
 	private Player createNewPlayer(int index) {
