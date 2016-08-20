@@ -82,12 +82,8 @@ public class BoardPanel extends JPanel {
 		actionsPanel.add(rollBtn);
 		rollBtn.addActionListener((ActionEvent e) -> {
 			rolledNums = board.getCurrentPlayer().rollDice();
-			try{
-				roll = true;
-				Thread.sleep(50);
-				this.repaint();
-				}
-			catch(InterruptedException er) {throw new Error("Error interrupted");}
+			roll = true;
+			this.repaint();
 		});
 		
 		diceIcons.add(new ImageIcon("d1.png"));
