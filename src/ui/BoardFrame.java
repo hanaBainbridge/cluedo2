@@ -95,6 +95,15 @@ public class BoardFrame {
 						 JOptionPane.showMessageDialog(null, message, "help", 1);
 					}
 				});
+				restart.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+					 	window.getContentPane().remove(boardPanel);
+						window.getContentPane().add(startPanel);
+						window.revalidate();
+						window.repaint();
+					}
+				});
 	}
 	
 	public static void main(String[] args) {new BoardFrame();}
