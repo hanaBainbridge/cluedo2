@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -58,8 +59,7 @@ public class BoardPanel extends JPanel {
 	private ArrayList<String> roomNames = new ArrayList<String>();
 	private ArrayList<String> weaponNames = new ArrayList<String>();
 	private ArrayList<String> characterNames = new ArrayList<String>();
-	
-	private String ans;
+
 
 	/**
 	 * The constructor for the Board panel that set up the GUI for the actual
@@ -70,7 +70,6 @@ public class BoardPanel extends JPanel {
 	 */
 	public BoardPanel(int num) {
 		intaliseArrays();
-		
 		characters.addAll(Arrays.asList("Miss Scarlet", "Professor Plum", "Colonel Mustard", "Mrs White",
 				"Reverend Green", "Mrs Peacock"));
 		gbc.insets = insets;
@@ -83,6 +82,7 @@ public class BoardPanel extends JPanel {
 		this.setLayout(new GridBagLayout());
 		this.setPreferredSize(new Dimension(600, 600));
 		this.setBackground(Color.WHITE);
+		this.setVisible(true);
 
 		cardsPanel.setPreferredSize(new Dimension(500, 210));
 		cardsPanel.setBackground(Color.GRAY);
@@ -92,16 +92,30 @@ public class BoardPanel extends JPanel {
 		// Button listener for suggestion goes here.
 		actionsPanel.add(accusationBtn);
 		accusationBtn.addActionListener((ActionEvent e) -> {
-			String accusaitonRoom=createOptions("room");
+			String roomA= getRoomValue("accusation");
+			String weaponA= getWeaponValue("accusation");
+			String characterA= getCharacterValue("accusation");
+			
+
 		});
+		
 		// Button listener for accusation goes here.
 		actionsPanel.add(rollBtn);
 		rollBtn.addActionListener((ActionEvent e) -> {
+			Player currentPlayer= board.getCurrentPlayer();
+			if(currentPlayer!=null){
 			rolledNums = board.getCurrentPlayer().rollDice();
 			roll = true;
 			this.repaint();
+			}
 		});
 		actionsPanel.add(endTurn);
+		endTurn.addActionListener((ActionEvent e) -> {
+			Player currentPlayer=board.getCurrentPlayer();
+			if(currentPlayer!=null){
+			currentPlayer.setEndStatus();
+			}
+		});
 		
 		diceIcons.add(new ImageIcon("d1.png"));
 		diceIcons.add(new ImageIcon("d2.png"));
@@ -130,10 +144,13 @@ public class BoardPanel extends JPanel {
 			public void mouseReleased(MouseEvent e) {
 				// System.out.println("b");
 				Player currentPlayer = board.getCurrentPlayer();
+				System.out.println("outer mouse");
 				if (currentPlayer != null) {
 					int index = playerIcons.indexOf(currentPlayer.getPlayerImage());
 					// check vaild move
+					System.out.println("inner mouse");
 					if (isVaildMove(e.getPoint())) {
+						System.out.println("validmovwe");
 						playersCoor.get(index).setLocation(e.getPoint());
 						repaint();
 					}
@@ -146,55 +163,143 @@ public class BoardPanel extends JPanel {
 			}
 		});
 	}
-	private String createOptions(String s) {
-		// TODO Auto-generated method stub
-		JFrame radioFrame=setUpRadioFrame(s);
-		JPanel radioPanel= new JPanel();
-		radioPanel.setPreferredSize(new Dimension(60,150));
+	private String getCharacterValue(String string) {
+		String var= null;
+		JPanel panel = new JPanel();
+	      JRadioButton scarrlett = new JRadioButton("Miss Scarlett");
+	      JRadioButton CM = new JRadioButton("Colonel Mustard");
+	      JRadioButton white = new JRadioButton("Mrs White");
+	      JRadioButton green = new JRadioButton("Reverend Green");
+	      JRadioButton peacock = new JRadioButton("Mrs Peacock");
+	      JRadioButton plum = new JRadioButton("Professor Plum");
+	        panel.add(scarrlett);
+	        panel.add(CM);
+	        panel.add(white);
+	        panel.add(green);
+	        panel.add(peacock);
+	        panel.add(plum);
+	        
+	        JOptionPane.showMessageDialog(null, panel);
+	        if(scarrlett.isSelected()){
+	        	var="Miss Scarlett";
+	        }
+	        if(CM.isSelected()){
+	        	var="Colonel Mustard";
+	        }
+	        if(white.isSelected()){
+	        	var="Mrs White";
+	        }
+	        if(green.isSelected()){
+	        	var="Reverend Green";
+	        }
+	        if(peacock.isSelected()){
+	        	var="Mrs Peacock";
+	        }
+	        if(plum.isSelected()){
+	        	var="Professor Plum";
+	        }
+	        return var;
+	}
+	private String getWeaponValue(String string) {
+		String var= null;
+		//weapon names
+		weaponNames.add("");
+		weaponNames.add("");
+		weaponNames.add("");
+		weaponNames.add("");
+		weaponNames.add("");
+		weaponNames.add("");
 		
-		radioFrame.getContentPane().add(radioPanel);
-		
-		ButtonGroup group= new ButtonGroup();
-		JRadioButton b1= new JRadioButton();
-		b1.setText("b1");
-		JRadioButton b2= new JRadioButton();
-		b2.setText("b2");
-		group.add(b2);
-		group.add(b1);
-		radioPanel.add(b2);
-		radioPanel.add(b1);
-		
-		JButton end= new JButton("ok");
-		radioPanel.add(end);
+		JPanel panel = new JPanel();
+	      JRadioButton candle = new JRadioButton("Candle Stick");
+	      JRadioButton dagger = new JRadioButton("Dagger");
+	      JRadioButton lead = new JRadioButton("Lead Pipe");
+	      JRadioButton revolver = new JRadioButton("Revolver");
+	      JRadioButton rope = new JRadioButton("Rope");
+	      JRadioButton spanner = new JRadioButton("Spanner");
 
-		 b1.addItemListener(new ItemListener() {
-	        @Override
-			public void itemStateChanged(ItemEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}           
-	      }); 
-		 b2.addItemListener(new ItemListener() {
-	          public void itemStateChanged(ItemEvent e) {         
-	            ans="b2";
-	         }           
-	      });
-		  System.out.println(ans);
-		end.addActionListener((ActionEvent e) -> {
-			radioFrame.dispose();		
-		});
+	      
+	        panel.add(candle);
+	        panel.add(dagger);
+	        panel.add(lead);
+	        panel.add(revolver);
+	        panel.add(rope);
+	        panel.add(spanner);
+
+	        JOptionPane.showMessageDialog(null, panel);
+	        if(candle.isSelected()){
+	        	var="Candle Stick";
+	        }
+	        if(dagger.isSelected()){
+	        	var="Dagger";
+	        }
+	        if(lead.isSelected()){
+	        	var="Lead Pipe";
+	        }
+	        if(revolver.isSelected()){
+	        	var="Revolver";
+	        }
+	        if(rope.isSelected()){
+	        	var="Rope";
+	        }
+	        if(spanner.isSelected()){
+	        	var="Spanner";
+	        }
+	                return var;
+	}
+	private String getRoomValue(String s) {
+		String ans = null;
+		JPanel panel = new JPanel();
+		JRadioButton ballRoom = new JRadioButton("Ball Room");
+		JRadioButton con = new JRadioButton("Conservatory");
+		JRadioButton billard = new JRadioButton("Billiard Room");
+		JRadioButton lib = new JRadioButton("Library");
+		JRadioButton study = new JRadioButton("Study");
+		JRadioButton hall = new JRadioButton("Hall");
+		JRadioButton kitchen = new JRadioButton("Kitchen");
+		JRadioButton dinning = new JRadioButton("Dinning Room");
+		JRadioButton lounge = new JRadioButton("Lounge");
+	
+		panel.add(ballRoom);
+		panel.add(billard);
+		panel.add(lib);
+		panel.add(study);
+		panel.add(hall);
+		panel.add(kitchen);
+		panel.add(dinning);
+		panel.add(lounge);
+		JOptionPane.showMessageDialog(null, panel);
+
+		if (ballRoom.isSelected()) {
+			ans = "Ball Room";
+		}
+		if (billard.isSelected()) {
+			ans = "Billard Room";
+		}
+		if (lib.isSelected()) {
+			ans = "libaray";
+		}
+		if (hall.isSelected()) {
+			ans = "hall";
+		}
+		if (dinning.isSelected()) {
+			ans = "dinning hall";
+		}
+		if (lounge.isSelected()) {
+			ans = "lounge";
+		}
+		if (study.isSelected()) {
+			ans = "study";
+		}
+		if (kitchen.isSelected()) {
+			ans = "kitchen";
+		}
 		return ans;
+
 	}
 
-	private JFrame setUpRadioFrame(String s) {
-		JFrame radioFrame= new JFrame();
-		radioFrame.setTitle("setting" );
-		radioFrame.setSize(200,200);
-		radioFrame.setVisible(true);
-		radioFrame.setLayout(new GridBagLayout());
-		radioFrame.setResizable(false);
-		return radioFrame;
-	}
+    
+
 
 	private Player createNewPlayer(int index) {
 		try {
@@ -276,29 +381,7 @@ public class BoardPanel extends JPanel {
 		playersCoor.add(new Point(175,380));
 		playersCoor.add(new Point(11,270));
 		
-		// room names
-				roomNames.add("Ball Room");
-				roomNames.add("Conservatory");
-				roomNames.add("Billiard Room");
-				roomNames.add("Library");
-				roomNames.add("Study");
-				roomNames.add("Hall");
-				roomNames.add("Lounge");
-				roomNames.add("Dinning Room");
-				roomNames.add("Kitchen");
-				//weapon names
-				weaponNames.add("Candle Stick");
-				weaponNames.add("Dagger");
-				weaponNames.add("Lead Pipe");
-				weaponNames.add("Revolver");
-				weaponNames.add("Rope");
-				weaponNames.add("Spanner");
-				//character names
-				characterNames.add("Miss Scarlett");
-				characterNames.add("Colonel Mustard");
-				characterNames.add("Mrs White");
-				characterNames.add("Reverend Green");
-				characterNames.add("Mrs Peacock");
-				characterNames.add("Professor Plum");
+		
+				
   }
 }
