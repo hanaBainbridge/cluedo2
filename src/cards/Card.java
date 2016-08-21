@@ -43,4 +43,13 @@ public abstract class Card {
 	 * @return ImageIcon, the image that represents the card.
 	 */
 	public ImageIcon getImage() {return image;}
+	
+	/**
+	 * Overrides the toString method in Object to return the name.
+	 * @return String, the name of the card.
+	 */
+	@Override
+	public String toString() {
+		return name;
+	}
 }

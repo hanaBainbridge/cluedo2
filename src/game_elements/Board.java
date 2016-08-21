@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
+
 import cards.Card;
 import cards.Character;
 import cards.Weapon;
@@ -16,13 +18,14 @@ import cards.RoomCard;
 
 public class Board {
 
-	private int[][] board; // Represents the board as a 2D array.
+	private int[][] board;
+	private Square[][] boardSquares; // Represents the board as a 2D array.
 	private ArrayList<Player> players; // Represents the players in the game.
-	private ArrayList<Character> characterCards; // Character cards.
-	private ArrayList<Weapon> weaponCards; // Weapon cards.
-	private ArrayList<RoomCard> roomCards; // Room cards.
+	private ArrayList<Character> characterCards = new ArrayList<Character>(); // Character cards.
+	private ArrayList<Weapon> weaponCards = new ArrayList<Weapon>(); // Weapon cards.
+	private ArrayList<RoomCard> roomCards = new ArrayList<RoomCard>(); // Room cards.
 	private ArrayList<Room> rooms; // These are the actual Rooms
-	private ArrayList<String> mixedCards;
+	private ArrayList<Card> mixedCards = new ArrayList<Card>();
 	private Solution solution;
 	private boolean gameNotWon = true;
 	private Player currentPlayer = null;
@@ -36,10 +39,67 @@ public class Board {
 	 */
 	public Board(ArrayList<Player> p) {
 		players = p; // Gets the players for this game.
+		initializeCards();
 		//solution = createSolution(true);
-		playGame();
+		Collections.shuffle(mixedCards);
+		
+		// Shuffles the cards.
+		Collections.shuffle(mixedCards); // Randomizes the cards.
+		int cardCount = (int) mixedCards.size() / players.size(); // Decides how many cards each player will get.
+		int remainder = mixedCards.size() % (cardCount * players.size()); // Gets the number of cards that are left over.
+
+		for (int i = 0; i < players.size(); i++) {
+			Set<Card> playerCards = new HashSet<Card>();
+			for (int j = 0; j < cardCount; j++) {
+				playerCards.add(mixedCards.remove(0)); // Adds the card to the player's hand but also removes it so no player gets the same card.
+			}
+			players.get(i).setHand(playerCards);
+		}
+				
+		// We have to add the solution cards back as we don't want the players to figure out what cards are missing, but we can be sure no players have them.
+		// The shuffling is so the players can't tell which card was selected as it will be the last one added.
+		characterCards.add(solution.getCharacter());
+		Collections.shuffle(characterCards);
+		weaponCards.add(solution.getWeapon());
+		Collections.shuffle(weaponCards);
+		roomCards.add(solution.getRoom());
+		Collections.shuffle(roomCards);
 	}
 
+	/**
+	 * Fills the card desks with card objects
+	 */
+	private void initializeCards() {
+		characterCards.add(new Character("Mrs Scarlett", new ImageIcon("MS.png")));
+		characterCards.add(new Character("Colonel Mustard", new ImageIcon("CM.png")));
+		characterCards.add(new Character("Mr Green", new ImageIcon("MG.png")));
+		characterCards.add(new Character("Professor Plum", new ImageIcon("PP.png")));
+		characterCards.add(new Character("Mrs White", new ImageIcon("MW.png")));
+		characterCards.add(new Character("Mrs Peacock", new ImageIcon("MP.png")));
+		
+		// Note that the images need to be replaced with the actual ones for the weapons and rooms.
+		weaponCards.add(new Weapon("Rope", new ImageIcon("MS.png")));
+		weaponCards.add(new Weapon("Dagger", new ImageIcon("MS.png")));
+		weaponCards.add(new Weapon("Candle Stick", new ImageIcon("MS.png")));
+		weaponCards.add(new Weapon("Lead Pipe", new ImageIcon("MS.png")));
+		weaponCards.add(new Weapon("Revolver", new ImageIcon("MS.png")));
+		weaponCards.add(new Weapon("Wrench", new ImageIcon("MS.png")));
+		
+		roomCards.add(new RoomCard("Kitchen", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Ball Room", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Conservatory", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Billard Room", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Library", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Study", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Hall", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Lounge", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Dinning Room", new ImageIcon("MS.png")));
+		
+		mixedCards.addAll(characterCards);
+		mixedCards.addAll(weaponCards);
+		mixedCards.addAll(roomCards);
+	}
+	
 	/**
 	 * Creates a solution, note that if it is a starting solution the chosen
 	 * cards are removed so no player can have the solution
@@ -75,22 +135,21 @@ public class Board {
 	 * Method that starts playing the cluedo game.
 	 */
 	public void playGame() {
+		/*
 		while(true) {
 			for(Player p: players) {
 				currentPlayer = p; // Sets the current player
 				p.playTurn();
 			}
 		}
+		*/
 	}
 	
 	/**
 	 * Initializes the board.
 	 */
 	private void initializeBoard() {
-		/*
-		 * Wall = -1, Room, 1, Hallways 0, Room entrances 2
-		 * arrays and y are the numbers inside them
-		 */
+		// Initialises the boardkey
 		board = new int[][] {
 				{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // x=0
 				{ -1, -1, 1, 1, 1, 1, -1, 0, 0, -1, 1, 1, 1, 1, 1, -1, 0, 0, 0,-1, 1, 1, 1, 1, -1 }, // x1
@@ -118,6 +177,27 @@ public class Board {
 				{ -1, -1, 1, 1, 1, -1, 0, 0, -1, 1, 1, 1, 2, 0, -1, 1, 1, 1,-1, 0, 0, -1, 1, 1, -1 }, // x23
 				{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } // x24
 		};
+		boardSquares = new Square[25][25];
+		for(int x = 0; x < board.length; x ++) {
+			for(int y = 0; y < board.length; y ++) {
+				// Wall
+				if(board[x][y] == -1) {
+					boardSquares[x][y] = new WallSquare(x, y);
+				}
+				// Hallway
+				else if(board[x][y] == 0) {
+					boardSquares[x][y] = new HallwaySquare(x, y);
+				}
+				// Room
+				else if(board[x][y] == 1) {
+					boardSquares[x][y] = new RoomSquare(x, y);
+				}
+				// Doorway
+				else {
+					boardSquares[x][y] = new DoorSquare(x, y);
+				}
+			}
+		}
 	}
 	
 	/**
