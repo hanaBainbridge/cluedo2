@@ -21,6 +21,8 @@ public class Board {
 	private int[][] board;
 	private Square[][] boardSquares; // Represents the board as a 2D array.
 	private ArrayList<Player> players; // Represents the players in the game.
+	private int currentPlayerIndex = 0; // Keeps track of the current player's index.
+	private Player currentPlayer = null;
 	private ArrayList<Character> characterCards = new ArrayList<Character>(); // Character cards.
 	private ArrayList<Weapon> weaponCards = new ArrayList<Weapon>(); // Weapon cards.
 	private ArrayList<RoomCard> roomCards = new ArrayList<RoomCard>(); // Room cards.
@@ -28,7 +30,6 @@ public class Board {
 	private ArrayList<Card> mixedCards = new ArrayList<Card>();
 	private Solution solution;
 	private boolean gameNotWon = true;
-	private Player currentPlayer = null;
 
 	public static void main(String[] args) {}	
 	
@@ -39,6 +40,7 @@ public class Board {
 	 */
 	public Board(ArrayList<Player> p) {
 		players = p; // Gets the players for this game.
+		currentPlayer = players.get(currentPlayerIndex);
 		initializeCards();
 		//solution = createSolution(true);
 		Collections.shuffle(mixedCards);
@@ -58,12 +60,14 @@ public class Board {
 				
 		// We have to add the solution cards back as we don't want the players to figure out what cards are missing, but we can be sure no players have them.
 		// The shuffling is so the players can't tell which card was selected as it will be the last one added.
+		/*
 		characterCards.add(solution.getCharacter());
 		Collections.shuffle(characterCards);
 		weaponCards.add(solution.getWeapon());
 		Collections.shuffle(weaponCards);
 		roomCards.add(solution.getRoom());
 		Collections.shuffle(roomCards);
+		*/
 	}
 
 	/**
@@ -134,15 +138,19 @@ public class Board {
 	/**
 	 * Method that starts playing the cluedo game.
 	 */
-	public void playGame() {
-		/*
-		while(true) {
-			for(Player p: players) {
-				currentPlayer = p; // Sets the current player
-				p.playTurn();
-			}
+	public void playGame() {}
+	
+	/**
+	 * Gives the next player their turn.
+	 */
+	public void nextPlayer() {
+		if (currentPlayerIndex == players.size()-1) {
+			currentPlayerIndex = 0;
 		}
-		*/
+		else {
+			currentPlayerIndex ++;
+		}
+		currentPlayer = players.get(currentPlayerIndex);
 	}
 	
 	/**

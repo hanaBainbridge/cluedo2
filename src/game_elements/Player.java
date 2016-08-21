@@ -20,14 +20,16 @@ public class Player{
 	// Stores the x and y coordinates of the player on the board.
 	private Point playerCoor;
 	private String character;
+	private String name;
 	// Keeps track of players who have been eliminated.
 	private boolean isPlaying;
 	// The room that the player is in.
 	private Room currentRoom;
 	private boolean endTurn = false;
 
-	public Player(ImageIcon imageIcon, Point point, String c) {
+	public Player(ImageIcon imageIcon, Point point, String c, String n) {
 		character = c;
+		name = n;
 		playerImage = imageIcon;
 		playerCoor = point;
 		isPlaying = true;
@@ -179,6 +181,13 @@ public class Player{
 		if(containedCards.size() != 0) {return containedCards;} // Return the cards
 		return null; // Return null if player has no cards.
 	}
-
-  
+	
+	/**
+	 * Method that returns the name of the player.
+	 * @return String, the name of the player.
+	 */
+	@Override
+	public String toString() {
+		return name;
+	}
 }

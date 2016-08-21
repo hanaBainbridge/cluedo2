@@ -45,6 +45,7 @@ public class BoardPanel extends JPanel {
 	private int[] rolledNums = null;
 	
 	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards.
+	private JLabel playerName = null;
 	private Insets insets = new Insets(0, 0, 0, 0); // Change later to a spacing more appropreite.
 	private int playerNum;
 	private ArrayList<Player> players = new ArrayList<Player>();
@@ -83,39 +84,6 @@ public class BoardPanel extends JPanel {
 		this.setPreferredSize(new Dimension(600, 600));
 		this.setBackground(Color.WHITE);
 		this.setVisible(true);
-
-		cardsPanel.setPreferredSize(new Dimension(500, 210));
-		cardsPanel.setBackground(Color.GRAY);
-		actionsPanel.setPreferredSize(new Dimension(100, 210));
-		actionsPanel.setBackground(Color.GRAY);
-		actionsPanel.add(suggestionBtn);
-		// Button listener for suggestion goes here.
-		actionsPanel.add(accusationBtn);
-		accusationBtn.addActionListener((ActionEvent e) -> {
-			String roomA= getRoomValue("accusation");
-			String weaponA= getWeaponValue("accusation");
-			String characterA= getCharacterValue("accusation");
-			
-
-		});
-		
-		// Button listener for accusation goes here.
-		actionsPanel.add(rollBtn);
-		rollBtn.addActionListener((ActionEvent e) -> {
-			Player currentPlayer= board.getCurrentPlayer();
-			if(currentPlayer!=null){
-			rolledNums = board.getCurrentPlayer().rollDice();
-			roll = true;
-			this.repaint();
-			}
-		});
-		actionsPanel.add(endTurn);
-		endTurn.addActionListener((ActionEvent e) -> {
-			Player currentPlayer=board.getCurrentPlayer();
-			if(currentPlayer!=null){
-			currentPlayer.setEndStatus();
-			}
-		});
 		
 		diceIcons.add(new ImageIcon("d1.png"));
 		diceIcons.add(new ImageIcon("d2.png"));
@@ -134,7 +102,42 @@ public class BoardPanel extends JPanel {
 		for (int i = 0; i < playerNum; i++) {
 			players.add(createNewPlayer(i + 1));
 		}
+		
 		board = new Board(players);
+		playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());
+		cardsPanel.setPreferredSize(new Dimension(500, 210));
+		cardsPanel.setBackground(Color.GRAY);
+		cardsPanel.add(playerName);
+		actionsPanel.setPreferredSize(new Dimension(100, 210));
+		actionsPanel.setBackground(Color.GRAY);
+		actionsPanel.add(suggestionBtn);
+		// Button listener for suggestion goes here.
+		actionsPanel.add(accusationBtn);
+		accusationBtn.addActionListener((ActionEvent e) -> {
+			String roomA= getRoomValue("accusation");
+			String weaponA= getWeaponValue("accusation");
+			String characterA= getCharacterValue("accusation");
+			
+
+		});
+		
+		// Button listener for accusation goes here.
+		actionsPanel.add(rollBtn);
+		rollBtn.addActionListener((ActionEvent e) -> {
+			rolledNums = board.getCurrentPlayer().rollDice();
+			roll = true;
+			this.repaint();
+		});
+		actionsPanel.add(endTurn);
+		endTurn.addActionListener((ActionEvent e) -> {
+			board.nextPlayer(); // Move to the next player.
+			cardsPanel.remove(playerName);
+			playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());
+			cardsPanel.add(playerName);
+			this.repaint();
+		});
+		
+		
 		// mouselistener for moving the plaeyrs 
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -163,6 +166,7 @@ public class BoardPanel extends JPanel {
 			}
 		});
 	}
+	
 	private String getCharacterValue(String string) {
 		String var= null;
 		JPanel panel = new JPanel();
@@ -312,7 +316,7 @@ public class BoardPanel extends JPanel {
 					"Please chose a character for player " + index, "Character selection",
 					JOptionPane.INFORMATION_MESSAGE, null, characters.toArray(), characters.get(0));
 			characters.remove(character);
-			return new Player(playerIcons.get(index - 1), playersCoor.get(index - 1), character);
+			return new Player(playerIcons.get(index - 1), playersCoor.get(index - 1), character, name);
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(null, "Game will now crash you have not entered any information for a field",
 					"Fatal error!", JOptionPane.ERROR_MESSAGE);
@@ -351,6 +355,8 @@ public class BoardPanel extends JPanel {
 		for(int i=0; i<playerNum; i++){
 			playerIcons.get(i).paintIcon(this, g, (int)playersCoor.get(i).getX(),(int)playersCoor.get(i).getY());
 		}		
+		
+		this.revalidate();
 	}
 	
 	public static void main(String[] args) {
