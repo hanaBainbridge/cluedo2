@@ -13,17 +13,22 @@ import java.awt.Insets;
 import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class BoardPanel extends JPanel {
 	private GridBagConstraints gbc = new GridBagConstraints(); // Defines properties about component spacing.
@@ -49,6 +54,12 @@ public class BoardPanel extends JPanel {
 	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>();
 	private ArrayList<Point> playersCoor= new ArrayList<Point>();
 	private Board board;
+	//felilds to create solution for accuation and suggestion
+	private ArrayList<String> roomNames = new ArrayList<String>();
+	private ArrayList<String> weaponNames = new ArrayList<String>();
+	private ArrayList<String> characterNames = new ArrayList<String>();
+	
+	private String ans;
 
 	/**
 	 * The constructor for the Board panel that set up the GUI for the actual
@@ -80,6 +91,9 @@ public class BoardPanel extends JPanel {
 		actionsPanel.add(suggestionBtn);
 		// Button listener for suggestion goes here.
 		actionsPanel.add(accusationBtn);
+		accusationBtn.addActionListener((ActionEvent e) -> {
+			String accusaitonRoom=createOptions("room");
+		});
 		// Button listener for accusation goes here.
 		actionsPanel.add(rollBtn);
 		rollBtn.addActionListener((ActionEvent e) -> {
@@ -118,10 +132,8 @@ public class BoardPanel extends JPanel {
 				Player currentPlayer = board.getCurrentPlayer();
 				if (currentPlayer != null) {
 					int index = playerIcons.indexOf(currentPlayer.getPlayerImage());
-					
 					// check vaild move
-					boolean vaildMove=isVaildMove(e.getPoint());
-					if (vaildMove) {
+					if (isVaildMove(e.getPoint())) {
 						playersCoor.get(index).setLocation(e.getPoint());
 						repaint();
 					}
@@ -130,9 +142,58 @@ public class BoardPanel extends JPanel {
 
 			private boolean isVaildMove(Point point) {
 				// TODO Auto-generated method stub
-				return false;
+				return true;
 			}
 		});
+	}
+	private String createPlayerOptions(String s) {
+		// TODO Auto-generated method stub
+		JFrame radioFrame=setUpRadioFrame(s);
+		JPanel radioPanel= new JPanel();
+		radioPanel.setPreferredSize(new Dimension(60,150));
+		
+		radioFrame.getContentPane().add(radioPanel);
+		
+		ButtonGroup group= new ButtonGroup();
+		JRadioButton b1= new JRadioButton();
+		b1.setText("b1");
+		JRadioButton b2= new JRadioButton();
+		b2.setText("b2");
+		group.add(b2);
+		group.add(b1);
+		radioPanel.add(b2);
+		radioPanel.add(b1);
+		
+		JButton end= new JButton("ok");
+		radioPanel.add(end);
+
+		 b1.addItemListener(new ItemListener() {
+	        @Override
+			public void itemStateChanged(ItemEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}           
+	      }); 
+		 b2.addItemListener(new ItemListener() {
+	          public void itemStateChanged(ItemEvent e) {         
+	            ans="b2";
+	         }           
+	      });
+		  System.out.println(ans);
+		end.addActionListener((ActionEvent e) -> {
+			radioFrame.dispose();		
+		});
+		return ans;
+	}
+
+	private JFrame setUpRadioFrame(String s) {
+		JFrame radioFrame= new JFrame();
+		radioFrame.setTitle("setting" );
+		radioFrame.setSize(200,200);
+		radioFrame.setVisible(true);
+		radioFrame.setLayout(new GridBagLayout());
+		radioFrame.setResizable(false);
+		return radioFrame;
 	}
 
 	private Player createNewPlayer(int index) {
@@ -214,5 +275,30 @@ public class BoardPanel extends JPanel {
 		playersCoor.add(new Point(575,305));
 		playersCoor.add(new Point(175,380));
 		playersCoor.add(new Point(11,270));
+		
+		// room names
+				roomNames.add("Ball Room");
+				roomNames.add("Conservatory");
+				roomNames.add("Billiard Room");
+				roomNames.add("Library");
+				roomNames.add("Study");
+				roomNames.add("Hall");
+				roomNames.add("Lounge");
+				roomNames.add("Dinning Room");
+				roomNames.add("Kitchen");
+				//weapon names
+				weaponNames.add("Candle Stick");
+				weaponNames.add("Dagger");
+				weaponNames.add("Lead Pipe");
+				weaponNames.add("Revolver");
+				weaponNames.add("Rope");
+				weaponNames.add("Spanner");
+				//character names
+				characterNames.add("Miss Scarlett");
+				characterNames.add("Colonel Mustard");
+				characterNames.add("Mrs White");
+				characterNames.add("Reverend Green");
+				characterNames.add("Mrs Peacock");
+				characterNames.add("Professor Plum");
   }
 }
