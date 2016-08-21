@@ -31,6 +31,7 @@ public class BoardPanel extends JPanel {
 	private JButton suggestionBtn = new JButton("Make suggestion");
 	private JButton accusationBtn = new JButton("Make Accusation");
 	private JButton rollBtn = new JButton("Roll Dice");
+	private JButton endTurn = new JButton("End Turn");
 	
 	private boolean roll = false;
 	private JLabel dice1 = null;
@@ -86,6 +87,7 @@ public class BoardPanel extends JPanel {
 			roll = true;
 			this.repaint();
 		});
+		actionsPanel.add(endTurn);
 		
 		diceIcons.add(new ImageIcon("d1.png"));
 		diceIcons.add(new ImageIcon("d2.png"));
@@ -135,6 +137,11 @@ public class BoardPanel extends JPanel {
 
 	private Player createNewPlayer(int index) {
 		try {
+			String name = (String) JOptionPane.showInputDialog(null, "Please a name for Player " + (index));
+			while(name.equals("")) {
+				JOptionPane.showMessageDialog(null, "No name entered", "Invaid input", JOptionPane.ERROR_MESSAGE);
+				name = (String) JOptionPane.showInputDialog(null, "Please a name for Player " + (index));
+			}
 			String character = (String) JOptionPane.showInputDialog(null,
 					"Please chose a character for player " + index, "Character selection",
 					JOptionPane.INFORMATION_MESSAGE, null, characters.toArray(), characters.get(0));

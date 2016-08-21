@@ -8,19 +8,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import ui.TextUI;
+
+import cards.Card;
+import cards.Character;
+import cards.Weapon;
+import cards.RoomCard;
 
 public class Board {
 
 	private int[][] board; // Represents the board as a 2D array.
 	private ArrayList<Player> players; // Represents the players in the game.
-	private ArrayList<String> characterCards; // Character cards.
-	private ArrayList<String> weaponCards; // Weapon cards.
-	private ArrayList<String> roomCards; // Room cards.
+	private ArrayList<Character> characterCards; // Character cards.
+	private ArrayList<Weapon> weaponCards; // Weapon cards.
+	private ArrayList<RoomCard> roomCards; // Room cards.
 	private ArrayList<Room> rooms; // These are the actual Rooms
 	private ArrayList<String> mixedCards;
 	private Solution solution;
-	private boolean gameNotWon;
+	private boolean gameNotWon = true;
 	private Player currentPlayer = null;
 
 	public static void main(String[] args) {}	
@@ -32,6 +36,7 @@ public class Board {
 	 */
 	public Board(ArrayList<Player> p) {
 		players = p; // Gets the players for this game.
+		//solution = createSolution(true);
 		playGame();
 	}
 
@@ -46,24 +51,24 @@ public class Board {
 	 */
 	private Solution createSolution(boolean startingSol) {
 		int randomIndex = (int) (Math.random() * 5) + 1; // random() returns number >= 0 and < 1, note that 7 will never be a possiblity and the maximum is 6.
-		String character = characterCards.get(randomIndex); // Selects a random character.
+		Character character = characterCards.get(randomIndex); // Selects a random character.
 		if (startingSol) {
 			characterCards.remove(randomIndex);
 		} // Removes the solution character.
 
 		randomIndex = (int) (Math.random() * 5) + 1;
-		String weapon = weaponCards.get(randomIndex); // Selects a random weapon.
+		Weapon weapon = weaponCards.get(randomIndex); // Selects a random weapon.
 		if (startingSol) {
 			weaponCards.remove(randomIndex);
 		} // Removes the solution weapon.
 
 		randomIndex = (int) (Math.random() * 8) + 1;
-		String room = roomCards.get(randomIndex); // Selects a random room card.
+		RoomCard room = roomCards.get(randomIndex); // Selects a random room card.
 		if (startingSol) {
 			roomCards.remove(randomIndex);
 		}
 
-		return new Solution(character, weapon, room);
+		return null;
 	}
 
 	/**

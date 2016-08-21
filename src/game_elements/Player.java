@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import cards.Card;
-import ui.BoardPanel;
-import ui.TextUI;
 
 public class Player{
 
