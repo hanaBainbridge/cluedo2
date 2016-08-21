@@ -24,12 +24,28 @@ public class Player{
 	private boolean isPlaying;
 	// The room that the player is in.
 	private Room currentRoom;
+	private boolean endTurn = false;
 
 	public Player(ImageIcon imageIcon, Point point, String c) {
 		character = c;
 		playerImage = imageIcon;
 		playerCoor = point;
 		isPlaying = true;
+	}
+	
+	/**
+	 * Method that waits for the 
+	 */
+	public void playTurn() {
+		while(!endTurn) {
+			
+			// The user will be pressing buttons here.
+			try {
+				Thread.sleep(50); // I think that the thread needs to sleep in order to see changes to endTurn (remove if not needed)
+			}
+			catch(InterruptedException e) {}
+		}
+		endTurn = false; // resets the flag
 	}
 
 	/**
@@ -102,6 +118,13 @@ public class Player{
 	public void setRoom(Room room) {
 		currentRoom = room;
 	}
+	
+	/**
+	 * Method that sets the endTurn flag to true.
+	 */
+	public void setEndStatus() {
+		endTurn = true;
+	}
 	/**
 	 * @return the players current hand 
 	 * */
@@ -109,14 +132,6 @@ public class Player{
 	
 	public void setHand(Set<Card> cards) {playerCards = cards;}
 	
-	/**
-	 * will handle the logic of the players turn 
-	 * @return boolean value to determine if the player is still playing 
-	 * the game 
-	 * */
-	public boolean playTurn(){
-		return false;
-	}
 	/**
 	 * getters for player image and player cooranates
 	 * */

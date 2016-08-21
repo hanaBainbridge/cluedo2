@@ -75,15 +75,12 @@ public class Board {
 	 * Method that starts playing the cluedo game.
 	 */
 	public void playGame() {
-		currentPlayer = players.get(0);
-		/*
 		while(true) {
 			for(Player p: players) {
 				currentPlayer = p; // Sets the current player
 				p.playTurn();
 			}
 		}
-		*/
 	}
 	
 	/**
