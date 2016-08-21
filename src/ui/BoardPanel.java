@@ -146,7 +146,7 @@ public class BoardPanel extends JPanel {
 			}
 		});
 	}
-	private String createPlayerOptions(String s) {
+	private String createOptions(String s) {
 		// TODO Auto-generated method stub
 		JFrame radioFrame=setUpRadioFrame(s);
 		JPanel radioPanel= new JPanel();
