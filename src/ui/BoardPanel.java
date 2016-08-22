@@ -40,6 +40,8 @@ import cards.RoomCard;
 import cards.Weapon;
 
 public class BoardPanel extends JPanel {
+	private final int SQUARE_WIDTH = 23; // The width of a square on the board.
+	private final int SQUARE_HEIGHT = 12; // The height of a square on the board.
 	private GridBagConstraints gbc = new GridBagConstraints(); // Defines properties about component spacing.
 	private JPanel actionsPanel = new JPanel(); // The action buttons will be stored here.
 	private JButton suggestionBtn = new JButton("Make suggestion");
@@ -47,23 +49,22 @@ public class BoardPanel extends JPanel {
 	private JButton rollBtn = new JButton("Roll Dice");
 	private JButton endTurn = new JButton("End Turn");
 	
-	private boolean roll = false;
-	private JLabel dice1 = null;
-	private JLabel dice2 = null;
-	private int[] rolledNums = null;
+	private boolean roll = false; // A flag that states if a player has rolled this turn or not.
+	private JLabel dice1 = null; // The image of the first dice.
+	private JLabel dice2 = null; // The image of the second dice.
+	private int[] rolledNums = null; // The numbers of the two dice.
 	
-	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards.
-	private JLabel playerName = null;
-	private Insets insets = new Insets(0, 0, 0, 0); // Change later to a spacing more appropreite.
-	private ArrayList<Player> players = new ArrayList<Player>();
-	private ArrayList<Object> characters = new ArrayList<Object>();
-	private ImageIcon boardImage = new ImageIcon("board.png");
-	private JLabel[] currentPlayerCards;
-	// lists to store player and dice images and the players current corrants
-	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>();
-	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>();
-	private ArrayList<Point> playersCoor= new ArrayList<Point>();
-	private Board board;
+	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards, as well as their name that they entered.
+	private JLabel playerName = null; // Displays the player's name.
+	private Insets insets = new Insets(0, 0, 0, 0);
+	private ArrayList<Player> players = new ArrayList<Player>(); // Stores the players that are in the game. 
+	private ArrayList<Object> characters = new ArrayList<Object>(); 
+	private ImageIcon boardImage = new ImageIcon("board2.png"); // The image of the board which the game will be played on.
+	private JLabel[] currentPlayerCards; // Stores the images of the player cards. 
+	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>(); // Stores the images representing the players.
+	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>(); // Stores the images showing the different dice face.
+	private ArrayList<Point> playersCoor= new ArrayList<Point>(); 
+	private Board board; // The board object which hold information about the game being played.
 	//felilds to create solution for accuation and suggestion
 	private ArrayList<String> roomNames = new ArrayList<String>();
 	private ArrayList<String> weaponNames = new ArrayList<String>();
@@ -71,16 +72,13 @@ public class BoardPanel extends JPanel {
 
 
 	/**
-	 * The constructor for the Board panel that set up the GUI for the actual
-	 * game.
+	 * The constructor for the Board panel that set up the GUI for the actual game.
 	 * 
-	 * @param num,
-	 *            the number of players.
+	 * @param num, the number of players.
 	 */
 	public BoardPanel(int num) {
-		intaliseArrays();
-		characters.addAll(Arrays.asList("Miss Scarlet", "Professor Plum", "Colonel Mustard", "Mrs White",
-				"Reverend Green", "Mrs Peacock"));
+		intaliseArrays(); // Initializes the player icons and the starting positions on the board.
+		characters.addAll(Arrays.asList("Miss Scarlet", "Professor Plum", "Colonel Mustard", "Mrs White", "Reverend Green", "Mrs Peacock"));
 		gbc.insets = insets;
 		gbc.gridheight = 3;
 		gbc.weightx = 0;
@@ -88,11 +86,12 @@ public class BoardPanel extends JPanel {
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		gbc.anchor = GridBagConstraints.LAST_LINE_START;
-		this.setLayout(new GridBagLayout());
-		this.setPreferredSize(new Dimension(600, 600));
-		this.setBackground(Color.WHITE);
+		this.setLayout(new GridBagLayout()); // Sets the layout.
+		this.setPreferredSize(new Dimension(600, 600)); // Sets the size.
+		this.setBackground(Color.WHITE); // Sets the background colour.
 		this.setVisible(true);
 		
+		// Initializes the dice images.
 		diceIcons.add(new ImageIcon("d1.png"));
 		diceIcons.add(new ImageIcon("d2.png"));
 		diceIcons.add(new ImageIcon("d3.png"));
@@ -109,25 +108,26 @@ public class BoardPanel extends JPanel {
 			players.add(createNewPlayer(i + 1));
 		}
 		
-		board = new Board(players);
-		getCurrentPlayerCardImages();
+		board = new Board(players); // Creates the board.
+		getCurrentPlayerCardImages(); // Gets the current images of the cards that the player has in their hand.
 		cardsPanel.setBackground(Color.GRAY);
 		cardsPanel.setPreferredSize(new Dimension(500, 210));
 		actionsPanel.setPreferredSize(new Dimension(100, 210));
 		actionsPanel.setBackground(Color.GRAY);
 		actionsPanel.add(suggestionBtn);
-		// Button listener for suggestion goes here.
 		suggestionBtn.addActionListener((ActionEvent e) -> {
 			//if(board.getCurrentPlayer().inRoom())
 			String character = getCharacterValue("suggestion");
 			String weapon = getWeaponValue("suggestion");
 			//allow the players to refute the suggestion 
-			int index=board.getCurrentIndex();
-			ArrayList<Player> players= board.getPlayers();
+			int index=board.getCurrentIndex(); // Stores the current player's index.
+			ArrayList<Player> players= board.getPlayers(); // Gets the players.
+			// This needs to be in clockwise order
 			for(int i=0; i<players.size(); i++){
+				// We don't want the player to refute their own suggestion.
 				if(i!=index){
+					boolean refutingCharacter=checkRefuting(character,players.get(i));  
 					boolean refutingWeapon=checkRefuting(weapon,players.get(i));
-					boolean refutingCharacter=checkRefuting(character,players.get(i));
 					if(refutingWeapon || refutingCharacter){
 						String text="a player has refted your suggestion\n"
 								+ " it is now the next players turn.";
@@ -178,15 +178,16 @@ public class BoardPanel extends JPanel {
 		rollBtn.addActionListener((ActionEvent e) -> {
 			// Can only roll if the player has not rolled this turn.
 			if (!roll) {
-				rolledNums = board.getCurrentPlayer().rollDice();
-				roll = true;
+				rolledNums = board.getCurrentPlayer().rollDice(); // Gets the rolled numbers.
+				roll = true; // Sets the flag to true.
 				this.repaint();
 			}
 		});
+		
 		actionsPanel.add(endTurn);
 		endTurn.addActionListener((ActionEvent e) -> {
-			if(!board.getGameStatus()){
-				//kindly please work 
+			// Checks if the game has been won.
+			if(!board.getGameStatus()){ 
 				JFrame endFrame= new JFrame("GAME WON!!!!!!!");
 				endFrame.setSize(200,500);
 				endFrame.setVisible(true);
@@ -202,12 +203,8 @@ public class BoardPanel extends JPanel {
 			}
 			
 			board.nextPlayer(); // Move to the next player.
-			cardsPanel.remove(playerName);
-			playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());
-			playerName.setPreferredSize(new Dimension(500, playerName.getPreferredSize().height));
-			cardsPanel.add(playerName);
-			getCurrentPlayerCardImages();
-			roll = false; // I don't want a player to be able to roll twice in the same go.
+			getCurrentPlayerCardImages(); // Gets the next player's cards
+			roll = false; // Allows the next player to roll.
 			this.repaint();
 		});
 		
@@ -216,27 +213,17 @@ public class BoardPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				// System.out.println("a");
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				// System.out.println("b");
-				Player currentPlayer = board.getCurrentPlayer();
-				System.out.println("outer mouse");
-				if (currentPlayer != null) {
-					int index = playerIcons.indexOf(currentPlayer.getPlayerImage());
-					// check vaild move
-					System.out.println("inner mouse");
-					if (isVaildMove(e.getPoint())) {
-						System.out.println("validmovwe");
-						playersCoor.get(index).setLocation(e.getPoint());
-						repaint();
+				Point mousePoint = new Point(e.getX(), e.getY()); // Gets the point that the mouse was clicked at.
+				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
+				
+				// Check if the mouse click was in any of the valid squares.
+				for(Point p: validPoints) {
+					// Point valid if inside the square
+					if(mousePoint.x >= p.x && mousePoint.x < p.x + SQUARE_WIDTH && mousePoint.y >= p.y && mousePoint.y < p.y + SQUARE_HEIGHT) {
+						board.getCurrentPlayer().setPoint(p);
+						break;
 					}
 				}
-			}
-
-			private boolean isVaildMove(Point point) {
-				// TODO Auto-generated method stub
-				return true;
 			}
 		});
 		this.repaint();
@@ -244,11 +231,13 @@ public class BoardPanel extends JPanel {
 	
 	private boolean checkRefuting(String s, Player player) {
 		boolean ans=false;
-		List<Card> cards=player.getHand();
+		List<Card> cards=player.getHand(); // This is a good start but this will only remove the card from the player's hand, we also want to remove it from the overall cards.
 		for(int i=0; i<cards.size(); i++){
-			if(cards.get(i).toString().equals(s)){
+			if(cards.get(i).toString().equals(s)) {
 				ans=true;
 				cards.remove(i);
+				// Should there be a break statement in here? The player can only refute using one card.
+				// Or what about returning after the card is removed.
 			}
 		}
 		return ans;
@@ -393,10 +382,13 @@ public class BoardPanel extends JPanel {
 		return ans;
 	}
 	
+	/**
+	 * Method that gets the cards of the current player.
+	 */
 	private void getCurrentPlayerCardImages() {
-		currentPlayerCards = new JLabel[board.getCurrentPlayer().getHand().size()];
+		currentPlayerCards = new JLabel[board.getCurrentPlayer().getHand().size()]; // Creates a new array.
 		for (int i = 0; i < board.getCurrentPlayer().getHand().size(); i ++) {
-			currentPlayerCards[i] = new JLabel(board.getCurrentPlayer().getHand().get(i).getImage());
+			currentPlayerCards[i] = new JLabel(board.getCurrentPlayer().getHand().get(i).getImage()); // Gets the card image.
 		}
 	}
 

@@ -1,12 +1,15 @@
 package game_elements;
 
 import cards.Card;
+import cards.CharacterCard;
+import cards.RoomCard;
+import cards.Weapon;
 
 public class Solution {
 	
-	private Card characterCard;
-	private Card roomCard;
-	private Card weaponCard;
+	private CharacterCard characterCard;
+	private RoomCard roomCard;
+	private Weapon weaponCard;
 
 	public static void main(String[] args) {}
 	
@@ -16,7 +19,7 @@ public class Solution {
 	 * @param w, the murder weapon.
 	 * @param r, the murder room.
 	 */
-	public Solution(Card cCard, Card wCard, Card rCard) {		
+	public Solution(CharacterCard cCard, Weapon wCard, RoomCard rCard) {		
 		characterCard=cCard;
 		roomCard=rCard;
 		weaponCard=wCard;
@@ -57,16 +60,16 @@ public class Solution {
 	/**
 	 * getter methods 
 	 * */
-	public Card getRoomCard() {
+	public RoomCard getRoomCard() {
 		return roomCard;
 	}
 
 
-	public Card getWeaponCard() {
+	public Weapon getWeaponCard() {
 		return weaponCard;
 	}
 
-	public Card getCharacterCard() {
+	public CharacterCard getCharacterCard() {
 		return characterCard;
 	}
 

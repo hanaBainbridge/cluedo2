@@ -12,21 +12,24 @@ import javax.swing.ImageIcon;
 import cards.Card;
 
 public class Player{
-
-	// Stores the names of the cards that this player has.
-	private List<Card> playerCards = new ArrayList<Card>();
 	
-	private ImageIcon playerImage;
-	// Stores the x and y coordinates of the player on the board.
-	private Point playerCoor;
-	private String character;
-	private String name;
-	// Keeps track of players who have been eliminated.
-	private boolean isPlaying;
-	// The room that the player is in.
-	private Room currentRoom;
+	private List<Card> playerCards = new ArrayList<Card>(); // Stores the cards that the player has in their hand.
+	
+	private ImageIcon playerImage; // Stores the ImageIcon that represents the player on the board.
+	private Point playerCoor; // Stores the x and y position that the player is currently at.
+	private String character; // Stores the name of the character that the player has chosen.
+	private String name; // Stores the name of the player.
+	private boolean isPlaying; // Stores if the player is playing the game or not.
+	private Room currentRoom = null; // Stores the room that the player is in (null if not in room)
 	private boolean endTurn = false;
 
+	/**
+	 * Constructor for the Player that sets up the object representing the player in the game.
+	 * @param imageIcon, the image that shows the player's position on the board.
+	 * @param point, the starting point of the player on the board.
+	 * @param c, the in game character that the player has chosen.
+	 * @param n, the player's name.
+	 */
 	public Player(ImageIcon imageIcon, Point point, String c, String n) {
 		character = c;
 		name = n;
@@ -50,41 +53,6 @@ public class Player{
 		endTurn = false; // resets the flag
 	}
 
-	/**
-	 * Method that gets the character, weapon and room the player wants for the solution and returns them as a List
-	 * @param charaters, the remaining characters
-	 * @param weapons, the remaining weapons.
-	 * @param rooms, the remaining rooms.
-	 * @return List<String>, the user's choices.
-	 */
-	public List<String> makeAccusation(ArrayList<String> charaters, ArrayList<String> weapons,
-			ArrayList<String> rooms) {
-		return null;
-	}
-
-	/**
-	 * Method that gets the character and weapon the player wishes to suggest.
-	 * @param charaters, the remaining characters.
-	 * @param weapons, the remaining weapons.
-	 * @param currentRoom, the room that the player making the suggestion is in.
-	 * @return List<String>, the player's choices.
-	 */
-	public List<String> makeSuggestion(ArrayList<String> characters, ArrayList<String> weapons, Room currentRoom) {
-		if (this.currentRoom != null && this.isPlaying) {
-
-		}
-		return null;
-	}
-
-	/**
-	 * Displays the player's cards that they have been dealt.
-	 */
-	public void displayHand() {
-		System.out.println("Player has the following cards in their hand...");
-		for(Card card: playerCards) {
-			System.out.println(card);
-		}
-	}
 	/**
 	 * rolls the dice and returns two random numbers as an arraylist 
 	 *
@@ -144,45 +112,16 @@ public class Player{
 		return playerImage;
 	}
 
-		public Point getPlayerCoor() {
-		return playerCoor;
-	}
 	/**
-	 * moves the players cooradinates on the board
+	 * Method sets the Position of the player.
+	 * @param p, the point that the player will now be at.
 	 */
-	public void movePlayer(String direction) {
-		switch (direction) {
-		case ("North"):
-			playerCoor.setLocation(playerCoor.getX(), (playerCoor.getY()-1));
-			break;
-		case ("East"):
-			playerCoor.setLocation((playerCoor.getX()+1), playerCoor.getY());
-			break;
-		case ("South"):
-			playerCoor.setLocation(playerCoor.getX(), (playerCoor.getY()+1));
-			break;
-		case ("West"):
-			playerCoor.setLocation((playerCoor.getX()-1), playerCoor.getY());
-			break;
-		default:
-			break;
-		}
+	public void setPoint(Point p) {
+		playerCoor = p;
 	}
 	
-	/**
-	 * Method checks if the player's hand contains one or more of the cards that another player has suggested and returns them
-	 * @param cards, the suggestion cards
-	 * @return the suggestion cards that the player has in their hand.
-	 */
-	public List<Card> getMatchingCards(List<Card> suggestionCards) {
-		List<Card> containedCards = new ArrayList<Card>();
-		for(Card card: playerCards) {
-			if(suggestionCards.contains(card)) {
-				containedCards.add(card); // Adds the card if the player has the card in their hand.
-			}
-		}
-		if(containedCards.size() != 0) {return containedCards;} // Return the cards
-		return null; // Return null if player has no cards.
+	public Point getPlayerCoor() {
+		return playerCoor;
 	}
 	
 	/**
@@ -192,8 +131,5 @@ public class Player{
 	@Override
 	public String toString() {
 		return name;
-	}
-	public void remove(int i){
-		playerCards.remove(i);
 	}
 }

@@ -17,9 +17,9 @@ import cards.Weapon;
 import cards.RoomCard;
 
 public class Board {
-
-	private int[][] board;
-	private Square[][] boardSquares; // Represents the board as a 2D array.
+	private final int SQUARE_WIDTH = 23; // The width of a square on the board.
+	private final int SQUARE_HEIGHT = 12; // The height of a square on the board.
+	private int[][] board; // Represents the board as a 2D array 
 	private ArrayList<Player> players; // Represents the players in the game.
 	private int currentPlayerIndex = 0; // Keeps track of the current player's index.
 	private Player currentPlayer = null;
@@ -27,29 +27,28 @@ public class Board {
 	private ArrayList<Weapon> weaponCards = new ArrayList<Weapon>(); // Weapon cards.
 	private ArrayList<RoomCard> roomCards = new ArrayList<RoomCard>(); // Room cards.
 	private ArrayList<Room> rooms; // These are the actual Rooms
-	private ArrayList<Card> mixedCards = new ArrayList<Card>();
-	private Solution solution;
-	private boolean gameNotWon = true;
+	private ArrayList<Card> mixedCards = new ArrayList<Card>(); // Used to shuffle the cards
+	private Solution solution; // The solution to the game.
+	private boolean gameNotWon = true; // Keeps the game playing while true
 
 	public static void main(String[] args) {}	
 	
 	/**
-	 * Constructor takes the number of players as a parameter.
+	 * Constructor takes an ArrayList of players as a parameter.
 	 * 
-	 * @param playerNum
+	 * @param p, the ArrayList of players.
 	 */
 	public Board(ArrayList<Player> p) {
 		players = p; // Gets the players for this game.
-		currentPlayer = players.get(currentPlayerIndex);
+		currentPlayer = players.get(currentPlayerIndex); // Sets the current player.
 		initializeCards();
-		solution = createSolution(true);
-		mixedCards.addAll(characterCards);
+		solution = createSolution(true); // Creates the starting solution
+		// Adds all the cards together after the solution cards have been removed.
+		mixedCards.addAll(characterCards); 
 		mixedCards.addAll(weaponCards);
 		mixedCards.addAll(roomCards);
 		Collections.shuffle(mixedCards);
 		
-		// Shuffles the cards.
-		Collections.shuffle(mixedCards); // Randomizes the cards.
 		int cardCount = (int) mixedCards.size() / players.size(); // Decides how many cards each player will get.
 		int remainder = mixedCards.size() % (cardCount * players.size()); // Gets the number of cards that are left over.
 
@@ -58,23 +57,19 @@ public class Board {
 			for (int j = 0; j < cardCount; j++) {
 				playerCards.add(mixedCards.remove(0)); // Adds the card to the player's hand but also removes it so no player gets the same card.
 			}
-			players.get(i).setHand(playerCards);
+			players.get(i).setHand(playerCards); // Gives the player their cards for the game.
 		}
 				
 		// We have to add the solution cards back as we don't want the players to figure out what cards are missing, but we can be sure no players have them.
 		// The shuffling is so the players can't tell which card was selected as it will be the last one added.
-		/*
-		characterCards.add(solution.getCharacter());
-		Collections.shuffle(characterCards);
-		weaponCards.add(solution.getWeapon());
-		Collections.shuffle(weaponCards);
-		roomCards.add(solution.getRoom());
+		characterCards.add(solution.getCharacterCard());
+		weaponCards.add(solution.getWeaponCard());
+		roomCards.add(solution.getRoomCard());
 		Collections.shuffle(roomCards);
-		*/
 	}
 
 	/**
-	 * Fills the card desks with card objects
+	 * Method that initializes all the cards for the game
 	 */
 	private void initializeCards() {
 		characterCards.add(new CharacterCard("Mrs Scarlett", new ImageIcon("MS.png")));
@@ -84,7 +79,6 @@ public class Board {
 		characterCards.add(new CharacterCard("Mrs White", new ImageIcon("MW.png")));
 		characterCards.add(new CharacterCard("Mrs Peacock", new ImageIcon("MP.png")));
 		
-		// Note that the images need to be replaced with the actual ones for the weapons and rooms.
 		weaponCards.add(new Weapon("Rope", new ImageIcon("rope.png")));
 		weaponCards.add(new Weapon("Dagger", new ImageIcon("knife.png")));
 		weaponCards.add(new Weapon("Candle Stick", new ImageIcon("candlestick.png")));
@@ -116,47 +110,50 @@ public class Board {
 		int randomIndex = (int) (Math.random() * 5) + 1; // random() returns number >= 0 and < 1, note that 7 will never be a possiblity and the maximum is 6.
 		CharacterCard character = characterCards.get(randomIndex); // Selects a random character.
 		if (startingSol) {
-			characterCards.remove(randomIndex);
-		} // Removes the solution character.
+			characterCards.remove(randomIndex); // Removes the solution character.
+		}
 
 		randomIndex = (int) (Math.random() * 5) + 1;
 		Weapon weapon = weaponCards.get(randomIndex); // Selects a random weapon.
 		if (startingSol) {
-			weaponCards.remove(randomIndex);
-		} // Removes the solution weapon.
+			weaponCards.remove(randomIndex); // Removes the solution weapon.
+		} 
 
 		randomIndex = (int) (Math.random() * 8) + 1;
 		RoomCard room = roomCards.get(randomIndex); // Selects a random room card.
 		if (startingSol) {
 			roomCards.remove(randomIndex);
 		}
-
-		return null;
+		return new Solution(character, weapon, room); // Returns the solution object.
 	}
-
-	/**
-	 * Method that starts playing the cluedo game.
-	 */
-	public void playGame() {}
 	
 	/**
 	 * Gives the next player their turn.
+	 * Moves the index to the next player.
 	 */
 	public void nextPlayer() {
+		// If index is at the last player go back to the first.
 		if (currentPlayerIndex == players.size()-1) {
 			currentPlayerIndex = 0;
 		}
 		else {
 			currentPlayerIndex ++;
 		}
-		currentPlayer = players.get(currentPlayerIndex);
+		currentPlayer = players.get(currentPlayerIndex); // Gets the new current player.
 	}
 	
 	/**
 	 * Initializes the board.
 	 */
 	private void initializeBoard() {
-		// Initialises the boardkey
+		// Initializes the board.
+		/*
+		 * Key:
+		 * -1 = Wall
+		 * 0 = Hallway
+		 * 1 = Room
+		 * 2 = Door
+		 */
 		board = new int[][] {
 				{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // x=0
 				{ -1, -1, 1, 1, 1, 1, -1, 0, 0, -1, 1, 1, 1, 1, 1, -1, 0, 0, 0,-1, 1, 1, 1, 1, -1 }, // x1
@@ -184,29 +181,33 @@ public class Board {
 				{ -1, -1, 1, 1, 1, -1, 0, 0, -1, 1, 1, 1, 2, 0, -1, 1, 1, 1,-1, 0, 0, -1, 1, 1, -1 }, // x23
 				{ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1 } // x24
 		};
-		boardSquares = new Square[25][25];
-		for(int x = 0; x < board.length; x ++) {
-			for(int y = 0; y < board.length; y ++) {
-				// Wall
-				if(board[x][y] == -1) {
-					boardSquares[x][y] = new WallSquare(x, y);
-				}
-				// Hallway
-				else if(board[x][y] == 0) {
-					boardSquares[x][y] = new HallwaySquare(x, y);
-				}
-				// Room
-				else if(board[x][y] == 1) {
-					boardSquares[x][y] = new RoomSquare(x, y);
-				}
-				// Doorway
-				else {
-					boardSquares[x][y] = new DoorSquare(x, y);
-				}
-			}
-			
-			
+	}
+	
+	/**
+	 * Method returns the valid points that the player can move to.
+	 * Note that the player can only move one square at a time so the method only checks the 4 surrounding squares.
+	 * @return ArrayList<Point>, the valid points the player can move to.
+	 */
+	public ArrayList<Point> getValidMoves() {
+		ArrayList<Point> validPoints = new ArrayList<Point>(); // Note that these points are the position of the squares in pixels 
+		Point playerPos = currentPlayer.getPlayerCoor();
+		// Check if North is valid
+		if(playerPos.y - 1 > 0 && (board[playerPos.x][playerPos.y-1] == 0 || board[playerPos.x][playerPos.y-1] == 2)) {
+			validPoints.add(new Point(playerPos.x * SQUARE_WIDTH, (playerPos.y - 1) * SQUARE_HEIGHT));
 		}
+		// Check if East is valid
+		if(playerPos.x + 1 < board.length && (board[playerPos.x + 1][playerPos.y] == 0 || board[playerPos.x + 1][playerPos.y] == 2)) {
+			validPoints.add(new Point((playerPos.x + 1) * SQUARE_WIDTH, playerPos.y * SQUARE_HEIGHT));
+		}
+		// Check if South is valid
+		if(playerPos.y + 1 < board.length && (board[playerPos.x][playerPos.y + 1] == 0 || board[playerPos.x][playerPos.y + 1] == 2)) {
+			validPoints.add(new Point(playerPos.x * SQUARE_WIDTH, (playerPos.y + 1) * SQUARE_HEIGHT));
+		}
+		// Check if West is valid
+		if(playerPos.x - -1 > 0 && (board[playerPos.x - 1][playerPos.y] == 0 || board[playerPos.x - 1][playerPos.y] == 2)) {
+			validPoints.add(new Point((playerPos.x - 1) * SQUARE_WIDTH, playerPos.y * SQUARE_HEIGHT));
+		}
+		return validPoints; // Returns the valid points.
 	}
 	
 	/**
@@ -214,35 +215,63 @@ public class Board {
 	 * @return Player, the current player.
 	 */
 	public Player getCurrentPlayer() {return currentPlayer;}
+	
 	/**
-	 * ruturns the solution of the game
-	 * */
+	 * Method that returns the solution to the game.
+	 * @return Solution, the solution to the game.
+	 */
 	public Solution getSolution(){
 		return solution;
 	}
+	
+	
 	/**
-	 * set the game to be won */
+	 * Sets the game not won flag to the parameter. 
+	 * @param b, the boolean that the flag is to be set to.
+	 */
 	public void setWon(boolean b){
 		gameNotWon=b;
 	}
+	
 	/**
-	 * gets the status of the game 
-	 * returns false if the game has been won
-	 * */
+	 * Method returns whether the game is won or not.
+	 * @return true if the game is not won, false if it is.
+	 */
 	public boolean getGameStatus() {
 		return gameNotWon;
 	}
 	
+	/**
+	 * Method returns the current character cards that are still possible solutions to the game.
+	 * @return, the List of suspects.
+	 */
 	public List<CharacterCard> getCharacterCards() {return characterCards;}
+	
+	/**
+	 * Method returns the weapon cards that are still possible murder weapons.
+	 * @return, the List of possible murder weapons.
+	 */
 	public List<Weapon> getWeaponCards() {return weaponCards;}
+	
+	/**
+	 * Method returns the room cards that are still possible murder rooms. 
+	 * @return List<RoomCard>, the List of possible murder rooms.
+	 */
 	public List<RoomCard> getRoomCards() {return roomCards;}
 
+	/**
+	 * Method returns the index of the current player whos turn it is. 
+	 * @return int, the current player's index.
+	 */
 	public int getCurrentIndex() {
 			return currentPlayerIndex;
 	}
+	
+	/**
+	 * Method returns an ArrayList of the players that are playing the game (eliminated included).
+	 * @return ArrayList<Player>, the ArrayList of players in the game.
+	 */
 	public ArrayList<Player> getPlayers(){
 		return players;
-	}
-	
-	
+	}	
 }
