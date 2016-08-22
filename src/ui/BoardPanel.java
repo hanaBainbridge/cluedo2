@@ -33,6 +33,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import cards.Card;
+import cards.CharacterCard;
+import cards.RoomCard;
+import cards.Weapon;
+
 public class BoardPanel extends JPanel {
 	private GridBagConstraints gbc = new GridBagConstraints(); // Defines properties about component spacing.
 	private JPanel actionsPanel = new JPanel(); // The action buttons will be stored here.
@@ -113,9 +118,9 @@ public class BoardPanel extends JPanel {
 		// Button listener for suggestion goes here.
 		suggestionBtn.addActionListener((ActionEvent e) -> {
 			//if(board.getCurrentPlayer().inRoom())
-			String weaponS= getWeaponValue("suggestion");
-			String characterS= getCharacterValue("suggestion");
-			Solution ans=board.getSolution();
+			String character = getCharacterValue("suggestion");
+			String weapon = getWeaponValue("suggestion");
+			
 		});
 		// Button listener for accusation goes here.
 		actionsPanel.add(accusationBtn);
@@ -216,14 +221,14 @@ public class BoardPanel extends JPanel {
 	      JRadioButton green = new JRadioButton("Reverend Green");
 	      JRadioButton peacock = new JRadioButton("Mrs Peacock");
 	      JRadioButton plum = new JRadioButton("Professor Plum");
-	      List<Character> currentCharacterCard = board.getCharacterCards();
+	      List<CharacterCard> currentCharacterCards = board.getCharacterCards();
 	      
-	        panel.add(scarrlett);
-	        panel.add(CM);
-	        panel.add(white);
-	        panel.add(green);
-	        panel.add(peacock);
-	        panel.add(plum);
+	        if(findCard(currentCharacterCards, "Miss Scarlett")) {panel.add(scarrlett);}
+	        if(findCard(currentCharacterCards, "Colonel Mustard")) {panel.add(CM);}
+	        if(findCard(currentCharacterCards, "Mrs White")) {panel.add(white);}
+	        if(findCard(currentCharacterCards, "Reverend Green")) {panel.add(green);}
+	        if(findCard(currentCharacterCards, "Mrs Peacock")) {panel.add(peacock);}
+	        if(findCard(currentCharacterCards, "Professor Plum")) {panel.add(plum);}
 	        
 	        JOptionPane.showMessageDialog(null, panel);
 	        if(scarrlett.isSelected()){
@@ -246,6 +251,15 @@ public class BoardPanel extends JPanel {
 	        }
 	        return var;
 	}
+	
+	private boolean findCard(List<? extends Card> cards, String name) {
+		for(Card c: cards) {
+			if(c.toString().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	private String getWeaponValue(String string) {
 		String var= null;
 		
@@ -256,14 +270,14 @@ public class BoardPanel extends JPanel {
 	      JRadioButton revolver = new JRadioButton("Revolver");
 	      JRadioButton rope = new JRadioButton("Rope");
 	      JRadioButton spanner = new JRadioButton("Spanner");
-
+	      List<Weapon> currentWeaponCards = board.getWeaponCards();
 	      
-	        panel.add(candle);
-	        panel.add(dagger);
-	        panel.add(lead);
-	        panel.add(revolver);
-	        panel.add(rope);
-	        panel.add(spanner);
+	        if(findCard(currentWeaponCards, "Candle Stick")) {panel.add(candle);}
+	        if(findCard(currentWeaponCards, "Dagger")) {panel.add(dagger);}
+	        if(findCard(currentWeaponCards, "Lead Pipe")) {panel.add(lead);}
+	        if(findCard(currentWeaponCards, "Revolver")) {panel.add(revolver);}
+	        if(findCard(currentWeaponCards, "Rope")) {panel.add(rope);}
+	        if(findCard(currentWeaponCards, "Spanner")) {panel.add(spanner);}
 
 	        JOptionPane.showMessageDialog(null, panel);
 	        if(candle.isSelected()){
@@ -298,15 +312,16 @@ public class BoardPanel extends JPanel {
 		JRadioButton kitchen = new JRadioButton("Kitchen");
 		JRadioButton dinning = new JRadioButton("Dinning Room");
 		JRadioButton lounge = new JRadioButton("Lounge");
-	
-		panel.add(ballRoom);
-		panel.add(billard);
-		panel.add(lib);
-		panel.add(study);
-		panel.add(hall);
-		panel.add(kitchen);
-		panel.add(dinning);
-		panel.add(lounge);
+		List<RoomCard> currentRoomCards = board.getRoomCards();
+		
+		if(findCard(currentRoomCards, "Ball Room")) {panel.add(ballRoom);}
+		if(findCard(currentRoomCards, "Billiard Room")) {panel.add(billard);}
+		if(findCard(currentRoomCards, "Library")) {panel.add(lib);}
+		if(findCard(currentRoomCards, "Study")) {panel.add(study);}
+		if(findCard(currentRoomCards, "Hall")) {panel.add(hall);}
+		if(findCard(currentRoomCards, "Kitchen")) {panel.add(kitchen);}
+		if(findCard(currentRoomCards, "Dinning Room")) {panel.add(dinning);}
+		if(findCard(currentRoomCards, "Lounge")) {panel.add(lounge);}
 		JOptionPane.showMessageDialog(null, panel);
 
 		if (ballRoom.isSelected()) {
@@ -316,25 +331,24 @@ public class BoardPanel extends JPanel {
 			ans = "Billard Room";
 		}
 		if (lib.isSelected()) {
-			ans = "libaray";
+			ans = "Libaray";
 		}
 		if (hall.isSelected()) {
-			ans = "hall";
+			ans = "Hall";
 		}
 		if (dinning.isSelected()) {
-			ans = "dinning hall";
+			ans = "Dinning hall";
 		}
 		if (lounge.isSelected()) {
-			ans = "lounge";
+			ans = "Lounge";
 		}
 		if (study.isSelected()) {
-			ans = "study";
+			ans = "Study";
 		}
 		if (kitchen.isSelected()) {
-			ans = "kitchen";
+			ans = "Kitchen";
 		}
 		return ans;
-
 	}
 	
 	private void getCurrentPlayerCardImages() {
