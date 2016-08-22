@@ -134,9 +134,12 @@ public class BoardPanel extends JPanel {
 		// Button listener for accusation goes here.
 		actionsPanel.add(rollBtn);
 		rollBtn.addActionListener((ActionEvent e) -> {
-			rolledNums = board.getCurrentPlayer().rollDice();
-			roll = true;
-			this.repaint();
+			// Can only roll if the player has not rolled this turn.
+			if (!roll) {
+				rolledNums = board.getCurrentPlayer().rollDice();
+				roll = true;
+				this.repaint();
+			}
 		});
 		actionsPanel.add(endTurn);
 		endTurn.addActionListener((ActionEvent e) -> {
@@ -146,6 +149,7 @@ public class BoardPanel extends JPanel {
 			playerName.setPreferredSize(new Dimension(500, playerName.getPreferredSize().height));
 			cardsPanel.add(playerName);
 			getCurrentPlayerCardImages();
+			roll = false; // I don't want a player to be able to roll twice in the same go.
 			this.repaint();
 		});
 		
@@ -363,7 +367,6 @@ public class BoardPanel extends JPanel {
 			actionsPanel.add(dice1);
 			actionsPanel.add(dice2);
 			this.revalidate();
-			roll = false;
 		}
 	}
 	

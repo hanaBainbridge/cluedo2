@@ -85,22 +85,22 @@ public class Board {
 		characterCards.add(new Character("Mrs Peacock", new ImageIcon("MP.png")));
 		
 		// Note that the images need to be replaced with the actual ones for the weapons and rooms.
-		weaponCards.add(new Weapon("Rope", new ImageIcon("MS.png")));
-		weaponCards.add(new Weapon("Dagger", new ImageIcon("MS.png")));
-		weaponCards.add(new Weapon("Candle Stick", new ImageIcon("MS.png")));
-		weaponCards.add(new Weapon("Lead Pipe", new ImageIcon("MS.png")));
-		weaponCards.add(new Weapon("Revolver", new ImageIcon("MS.png")));
-		weaponCards.add(new Weapon("Wrench", new ImageIcon("MS.png")));
+		weaponCards.add(new Weapon("Rope", new ImageIcon("rope.png")));
+		weaponCards.add(new Weapon("Dagger", new ImageIcon("knife.png")));
+		weaponCards.add(new Weapon("Candle Stick", new ImageIcon("candlestick.png")));
+		weaponCards.add(new Weapon("Lead Pipe", new ImageIcon("leadpipe.png")));
+		weaponCards.add(new Weapon("Revolver", new ImageIcon("revolver.png")));
+		weaponCards.add(new Weapon("Wrench", new ImageIcon("wrench.png")));
 		
-		roomCards.add(new RoomCard("Kitchen", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Ball Room", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Conservatory", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Billard Room", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Library", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Study", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Hall", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Lounge", new ImageIcon("MS.png")));
-		roomCards.add(new RoomCard("Dinning Room", new ImageIcon("MS.png")));
+		roomCards.add(new RoomCard("Kitchen", new ImageIcon("kitchen.png")));
+		roomCards.add(new RoomCard("Ball Room", new ImageIcon("ballroom.png")));
+		roomCards.add(new RoomCard("Conservatory", new ImageIcon("conservatory.png")));
+		roomCards.add(new RoomCard("Billard Room", new ImageIcon("billardroom.png")));
+		roomCards.add(new RoomCard("Library", new ImageIcon("library.png")));
+		roomCards.add(new RoomCard("Study", new ImageIcon("study.png")));
+		roomCards.add(new RoomCard("Hall", new ImageIcon("hall.png")));
+		roomCards.add(new RoomCard("Lounge", new ImageIcon("lounge.png")));
+		roomCards.add(new RoomCard("Dinning Room", new ImageIcon("dinningroom.png")));
 	}
 	
 	/**
