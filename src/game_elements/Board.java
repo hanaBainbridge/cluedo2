@@ -12,7 +12,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import cards.Card;
-import cards.Character;
+import cards.CharacterCard;
 import cards.Weapon;
 import cards.RoomCard;
 
@@ -23,7 +23,7 @@ public class Board {
 	private ArrayList<Player> players; // Represents the players in the game.
 	private int currentPlayerIndex = 0; // Keeps track of the current player's index.
 	private Player currentPlayer = null;
-	private ArrayList<Character> characterCards = new ArrayList<Character>(); // Character cards.
+	private ArrayList<CharacterCard> characterCards = new ArrayList<CharacterCard>(); // Character cards.
 	private ArrayList<Weapon> weaponCards = new ArrayList<Weapon>(); // Weapon cards.
 	private ArrayList<RoomCard> roomCards = new ArrayList<RoomCard>(); // Room cards.
 	private ArrayList<Room> rooms; // These are the actual Rooms
@@ -77,12 +77,12 @@ public class Board {
 	 * Fills the card desks with card objects
 	 */
 	private void initializeCards() {
-		characterCards.add(new Character("Mrs Scarlett", new ImageIcon("MS.png")));
-		characterCards.add(new Character("Colonel Mustard", new ImageIcon("CM.png")));
-		characterCards.add(new Character("Mr Green", new ImageIcon("MG.png")));
-		characterCards.add(new Character("Professor Plum", new ImageIcon("PP.png")));
-		characterCards.add(new Character("Mrs White", new ImageIcon("MW.png")));
-		characterCards.add(new Character("Mrs Peacock", new ImageIcon("MP.png")));
+		characterCards.add(new CharacterCard("Mrs Scarlett", new ImageIcon("MS.png")));
+		characterCards.add(new CharacterCard("Colonel Mustard", new ImageIcon("CM.png")));
+		characterCards.add(new CharacterCard("Mr Green", new ImageIcon("MG.png")));
+		characterCards.add(new CharacterCard("Professor Plum", new ImageIcon("PP.png")));
+		characterCards.add(new CharacterCard("Mrs White", new ImageIcon("MW.png")));
+		characterCards.add(new CharacterCard("Mrs Peacock", new ImageIcon("MP.png")));
 		
 		// Note that the images need to be replaced with the actual ones for the weapons and rooms.
 		weaponCards.add(new Weapon("Rope", new ImageIcon("rope.png")));
@@ -114,7 +114,7 @@ public class Board {
 	 */
 	private Solution createSolution(boolean startingSol) {
 		int randomIndex = (int) (Math.random() * 5) + 1; // random() returns number >= 0 and < 1, note that 7 will never be a possiblity and the maximum is 6.
-		Character character = characterCards.get(randomIndex); // Selects a random character.
+		CharacterCard character = characterCards.get(randomIndex); // Selects a random character.
 		if (startingSol) {
 			characterCards.remove(randomIndex);
 		} // Removes the solution character.
@@ -232,5 +232,9 @@ public class Board {
 	public boolean getGameStatus() {
 		return gameNotWon;
 	}
+	
+	public List<CharacterCard> getCharacterCards() {return characterCards;}
+	public List<Weapon> getWeaponCards() {return weaponCards;}
+	public List<RoomCard> getRoomCards() {return roomCards;}
 	
 }

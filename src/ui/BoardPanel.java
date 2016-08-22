@@ -115,11 +115,7 @@ public class BoardPanel extends JPanel {
 			//if(board.getCurrentPlayer().inRoom())
 			String weaponS= getWeaponValue("suggestion");
 			String characterS= getCharacterValue("suggestion");
-			
 			Solution ans=board.getSolution();
-			
-			
-
 		});
 		// Button listener for accusation goes here.
 		actionsPanel.add(accusationBtn);
@@ -156,8 +152,7 @@ public class BoardPanel extends JPanel {
 		endTurn.addActionListener((ActionEvent e) -> {
 			if(!board.getGameStatus()){
 				//kindly please work 
-				JFrame endFrame= new JFrame();
-				endFrame.setTitle("GAME WON!!!!!!!" );
+				JFrame endFrame= new JFrame("GAME WON!!!!!!!");
 				endFrame.setSize(200,500);
 				endFrame.setVisible(true);
 				endFrame.setLayout(new GridBagLayout());
@@ -170,6 +165,7 @@ public class BoardPanel extends JPanel {
 				JLabel endText= new JLabel(text);
 				endPanel.add(endText);	
 			}
+			
 			board.nextPlayer(); // Move to the next player.
 			cardsPanel.remove(playerName);
 			playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());
@@ -220,6 +216,8 @@ public class BoardPanel extends JPanel {
 	      JRadioButton green = new JRadioButton("Reverend Green");
 	      JRadioButton peacock = new JRadioButton("Mrs Peacock");
 	      JRadioButton plum = new JRadioButton("Professor Plum");
+	      List<Character> currentCharacterCard = board.getCharacterCards();
+	      
 	        panel.add(scarrlett);
 	        panel.add(CM);
 	        panel.add(white);

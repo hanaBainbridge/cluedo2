@@ -7,8 +7,8 @@ import javax.swing.ImageIcon;
  * @author Connor
  *
  */
-public class Character extends Card{
-	public Character(String n, ImageIcon i) {
+public class CharacterCard extends Card{
+	public CharacterCard(String n, ImageIcon i) {
 		super();
 		super.name = n;
 		super.image = i;
