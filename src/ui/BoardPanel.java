@@ -140,6 +140,20 @@ public class BoardPanel extends JPanel {
 		});
 		actionsPanel.add(endTurn);
 		endTurn.addActionListener((ActionEvent e) -> {
+			if(!board.getGameStatus()){
+				JFrame endFrame= new JFrame();
+				endFrame.setTitle("GAME WON!!!!!!!" );
+				endFrame.setSize(200,500);
+				endFrame.setVisible(true);
+				endFrame.setLayout(new GridBagLayout());
+				endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				JPanel endPanel= new JPanel();
+				endPanel.setPreferredSize(new Dimension(200,200));
+				String text="The game has been won!!!!"
+						+ "The winner is" + board.getCurrentPlayer().toString();
+				JLabel endText= new JLabel(text);
+				endPanel.add(endText);	
+			}
 			board.nextPlayer(); // Move to the next player.
 			cardsPanel.remove(playerName);
 			playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());

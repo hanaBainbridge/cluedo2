@@ -53,7 +53,7 @@ public class Board {
 		int cardCount = (int) mixedCards.size() / players.size(); // Decides how many cards each player will get.
 		int remainder = mixedCards.size() % (cardCount * players.size()); // Gets the number of cards that are left over.
 
-		for (int i = 0; i < players.size(); i++) {
+		for (int i = 0; i  < players.size(); i++) {
 			List<Card> playerCards = new ArrayList<Card>();
 			for (int j = 0; j < cardCount; j++) {
 				playerCards.add(mixedCards.remove(0)); // Adds the card to the player's hand but also removes it so no player gets the same card.
@@ -224,6 +224,13 @@ public class Board {
 	 * set the game to be won */
 	public void setWon(boolean b){
 		gameNotWon=b;
+	}
+	/**
+	 * gets the status of the game 
+	 * returns false if the game has been won
+	 * */
+	public boolean getGameStatus() {
+		return gameNotWon;
 	}
 	
 }
