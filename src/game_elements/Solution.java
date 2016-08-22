@@ -1,10 +1,12 @@
 package game_elements;
 
+import cards.Card;
+
 public class Solution {
 	
-	private String character; // The murderer.
-	private String weapon; // The murder weapon.
-	private String room; // The murder room.
+	private Card characterCard;
+	private Card roomCard;
+	private Card weaponCard;
 
 	public static void main(String[] args) {}
 	
@@ -14,10 +16,10 @@ public class Solution {
 	 * @param w, the murder weapon.
 	 * @param r, the murder room.
 	 */
-	public Solution(String c, String w, String r) {
-		character = c;
-		weapon = w;
-		room = r;
+	public Solution(Card cCard, Card wCard, Card rCard) {		
+		characterCard=cCard;
+		roomCard=rCard;
+		weaponCard=wCard;
 	}
 	
 	/**
@@ -26,15 +28,49 @@ public class Solution {
 	 * @return true if Object is equal to this one.
 	 */
 	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Solution) {
-			Solution s = (Solution)o;
-			return (character.equals(s.character) && weapon.equals(s.weapon) && room.equals(s.room)); // returns true if all the Strings are equal.
-		}
-		return false;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Solution))
+			return false;
+		Solution other = (Solution) obj;
+		if (characterCard == null) {
+			if (other.characterCard != null)
+				return false;
+		} else if (!characterCard.equals(other.characterCard))
+			return false;
+		if (roomCard == null) {
+			if (other.roomCard != null)
+				return false;
+		} else if (!roomCard.equals(other.roomCard))
+			return false;
+		if (weaponCard == null) {
+			if (other.weaponCard != null)
+				return false;
+		} else if (!weaponCard.equals(other.weaponCard))
+			return false;
+		return true;
 	}
 	
-	public String getCharacter() {return character;}
-	public String getWeapon() {return weapon;}
-	public String getRoom() {return room;}
+	/**
+	 * getter methods 
+	 * */
+	public Card getRoomCard() {
+		return roomCard;
+	}
+
+
+	public Card getWeaponCard() {
+		return weaponCard;
+	}
+
+	public Card getCharacterCard() {
+		return characterCard;
+	}
+
+	
+	
+	
 }

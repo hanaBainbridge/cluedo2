@@ -2,6 +2,8 @@ package ui;
 
 import game_elements.Board;
 import game_elements.Player;
+import game_elements.Solution;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -114,6 +116,17 @@ public class BoardPanel extends JPanel {
 			String roomA= getRoomValue("accusation");
 			String weaponA= getWeaponValue("accusation");
 			String characterA= getCharacterValue("accusation");
+			
+			Solution ans=board.getSolution();
+			if(ans.getRoomCard().toString().equals(roomA) &&
+			   ans.getWeaponCard().toString().equals(weaponA) &&	
+			   ans.getCharacterCard().toString().equals(characterA)){
+				board.setWon(false);
+			}
+			else{
+				Player cPlayer=board.getCurrentPlayer();
+				cPlayer.eleimatePlayer();
+			}
 			
 
 		});

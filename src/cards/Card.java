@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
  * @author Connor 
  *
  */
-// do you like me eclispe 
 public abstract class Card {
 	protected String name;
 	protected boolean eliminated;

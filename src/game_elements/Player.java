@@ -102,6 +102,9 @@ public class Player{
 	public boolean isEliminated() {
 		return !isPlaying;
 	}
+	public void eleimatePlayer(){
+		isPlaying=false;
+	}
 	
 	/**
 	 * Sets whether the player is playing the game to b.

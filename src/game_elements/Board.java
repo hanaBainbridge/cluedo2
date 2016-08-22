@@ -204,6 +204,8 @@ public class Board {
 					boardSquares[x][y] = new DoorSquare(x, y);
 				}
 			}
+			
+			
 		}
 	}
 	
@@ -212,4 +214,16 @@ public class Board {
 	 * @return Player, the current player.
 	 */
 	public Player getCurrentPlayer() {return currentPlayer;}
+	/**
+	 * ruturns the solution of the game
+	 * */
+	public Solution getSolution(){
+		return solution;
+	}
+	/**
+	 * set the game to be won */
+	public void setWon(boolean b){
+		gameNotWon=b;
+	}
+	
 }
