@@ -47,10 +47,10 @@ public class BoardPanel extends JPanel {
 	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards.
 	private JLabel playerName = null;
 	private Insets insets = new Insets(0, 0, 0, 0); // Change later to a spacing more appropreite.
-	private int playerNum;
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private ArrayList<Object> characters = new ArrayList<Object>();
 	private ImageIcon boardImage = new ImageIcon("board.png");
+	private JLabel[] currentPlayerCards;
 	// lists to store player and dice images and the players current corrants
 	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>();
 	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>();
@@ -95,19 +95,16 @@ public class BoardPanel extends JPanel {
 		this.add(cardsPanel, gbc);
 		gbc.gridx++;
 		this.add(actionsPanel, gbc);
-
-		playerNum = num;
         
 		// Creates the players.
-		for (int i = 0; i < playerNum; i++) {
+		for (int i = 0; i < num; i++) {
 			players.add(createNewPlayer(i + 1));
 		}
 		
 		board = new Board(players);
-		playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());
-		cardsPanel.setPreferredSize(new Dimension(500, 210));
+		getCurrentPlayerCardImages();
 		cardsPanel.setBackground(Color.GRAY);
-		cardsPanel.add(playerName);
+		cardsPanel.setPreferredSize(new Dimension(500, 210));
 		actionsPanel.setPreferredSize(new Dimension(100, 210));
 		actionsPanel.setBackground(Color.GRAY);
 		actionsPanel.add(suggestionBtn);
@@ -133,7 +130,9 @@ public class BoardPanel extends JPanel {
 			board.nextPlayer(); // Move to the next player.
 			cardsPanel.remove(playerName);
 			playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());
+			playerName.setPreferredSize(new Dimension(500, playerName.getPreferredSize().height));
 			cardsPanel.add(playerName);
+			getCurrentPlayerCardImages();
 			this.repaint();
 		});
 		
@@ -165,6 +164,7 @@ public class BoardPanel extends JPanel {
 				return true;
 			}
 		});
+		this.repaint();
 	}
 	
 	private String getCharacterValue(String string) {
@@ -301,9 +301,13 @@ public class BoardPanel extends JPanel {
 		return ans;
 
 	}
-
-    
-
+	
+	private void getCurrentPlayerCardImages() {
+		currentPlayerCards = new JLabel[board.getCurrentPlayer().getHand().size()];
+		for (int i = 0; i < board.getCurrentPlayer().getHand().size(); i ++) {
+			currentPlayerCards[i] = new JLabel(board.getCurrentPlayer().getHand().get(i).getImage());
+		}
+	}
 
 	private Player createNewPlayer(int index) {
 		try {
@@ -351,8 +355,14 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private void paintPlayers(Graphics g) {
-		
-		for(int i=0; i<playerNum; i++){
+		cardsPanel.removeAll();
+		playerName = new JLabel("Current Player: " + board.getCurrentPlayer().toString());
+		playerName.setPreferredSize(new Dimension(500, playerName.getPreferredSize().height));
+		cardsPanel.add(playerName);
+		for (int i = 0; i < board.getCurrentPlayer().getHand().size(); i++) {
+			cardsPanel.add(currentPlayerCards[i]);
+		}
+		for(int i=0; i<players.size(); i++){
 			playerIcons.get(i).paintIcon(this, g, (int)playersCoor.get(i).getX(),(int)playersCoor.get(i).getY());
 		}		
 		
@@ -386,8 +396,5 @@ public class BoardPanel extends JPanel {
 		playersCoor.add(new Point(575,305));
 		playersCoor.add(new Point(175,380));
 		playersCoor.add(new Point(11,270));
-		
-		
-				
   }
 }

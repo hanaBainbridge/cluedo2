@@ -14,12 +14,6 @@ public abstract class Card {
 	protected ImageIcon image;
 	
 	/**
-	 * Returns the name of the item
-	 * @return String, item's name.
-	 */
-	public String getName() {return name;}
-	
-	/**
 	 * Returns if the card has been eliminated from the possible choices
 	 * @return true if eliminated, false if not.
 	 */

@@ -42,7 +42,10 @@ public class Board {
 		players = p; // Gets the players for this game.
 		currentPlayer = players.get(currentPlayerIndex);
 		initializeCards();
-		//solution = createSolution(true);
+		solution = createSolution(true);
+		mixedCards.addAll(characterCards);
+		mixedCards.addAll(weaponCards);
+		mixedCards.addAll(roomCards);
 		Collections.shuffle(mixedCards);
 		
 		// Shuffles the cards.
@@ -51,7 +54,7 @@ public class Board {
 		int remainder = mixedCards.size() % (cardCount * players.size()); // Gets the number of cards that are left over.
 
 		for (int i = 0; i < players.size(); i++) {
-			Set<Card> playerCards = new HashSet<Card>();
+			List<Card> playerCards = new ArrayList<Card>();
 			for (int j = 0; j < cardCount; j++) {
 				playerCards.add(mixedCards.remove(0)); // Adds the card to the player's hand but also removes it so no player gets the same card.
 			}
@@ -98,10 +101,6 @@ public class Board {
 		roomCards.add(new RoomCard("Hall", new ImageIcon("MS.png")));
 		roomCards.add(new RoomCard("Lounge", new ImageIcon("MS.png")));
 		roomCards.add(new RoomCard("Dinning Room", new ImageIcon("MS.png")));
-		
-		mixedCards.addAll(characterCards);
-		mixedCards.addAll(weaponCards);
-		mixedCards.addAll(roomCards);
 	}
 	
 	/**

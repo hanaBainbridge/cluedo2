@@ -14,7 +14,7 @@ import cards.Card;
 public class Player{
 
 	// Stores the names of the cards that this player has.
-	private Set<Card> playerCards = new HashSet<Card>();
+	private List<Card> playerCards = new ArrayList<Card>();
 	
 	private ImageIcon playerImage;
 	// Stores the x and y coordinates of the player on the board.
@@ -130,9 +130,9 @@ public class Player{
 	/**
 	 * @return the players current hand 
 	 * */
-	public Set<Card> getHand() {return playerCards;}
+	public List<Card> getHand() {return playerCards;}
 	
-	public void setHand(Set<Card> cards) {playerCards = cards;}
+	public void setHand(List<Card> cards) {playerCards = cards;}
 	
 	/**
 	 * getters for player image and player cooranates
