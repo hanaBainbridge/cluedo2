@@ -193,4 +193,7 @@ public class Player{
 	public String toString() {
 		return name;
 	}
+	public void remove(int i){
+		playerCards.remove(i);
+	}
 }

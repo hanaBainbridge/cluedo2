@@ -236,5 +236,13 @@ public class Board {
 	public List<CharacterCard> getCharacterCards() {return characterCards;}
 	public List<Weapon> getWeaponCards() {return weaponCards;}
 	public List<RoomCard> getRoomCards() {return roomCards;}
+
+	public int getCurrentIndex() {
+			return currentPlayerIndex;
+	}
+	public ArrayList<Player> getPlayers(){
+		return players;
+	}
+	
 	
 }

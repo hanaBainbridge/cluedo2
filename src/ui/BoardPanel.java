@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -120,6 +121,35 @@ public class BoardPanel extends JPanel {
 			//if(board.getCurrentPlayer().inRoom())
 			String character = getCharacterValue("suggestion");
 			String weapon = getWeaponValue("suggestion");
+			//allow the players to refute the suggestion 
+			int index=board.getCurrentIndex();
+			ArrayList<Player> players= board.getPlayers();
+			for(int i=0; i<players.size(); i++){
+				if(i!=index){
+					boolean refutingWeapon=checkRefuting(weapon,players.get(i));
+					boolean refutingCharacter=checkRefuting(character,players.get(i));
+					if(refutingWeapon || refutingCharacter){
+						String text="a player has refted your suggestion\n"
+								+ " it is now the next players turn.";
+						JPanel outcome=new JPanel();
+						JLabel outcomeText= new JLabel(text);
+						outcome.add(outcomeText);
+						JOptionPane.showMessageDialog(null, outcome); 
+						// set next player turn 
+						board.nextPlayer();
+						break;
+						
+					}
+					else{
+						String text= "player" + players.get(i).toString() +"has "
+								+ "not refutedd your seggestion";
+						JPanel outcome=new JPanel();
+						JLabel outcomeText= new JLabel(text);
+						outcome.add(outcomeText);
+						JOptionPane.showMessageDialog(null, outcome); 
+					}
+				}
+			}
 			
 		});
 		// Button listener for accusation goes here.
@@ -212,6 +242,18 @@ public class BoardPanel extends JPanel {
 		this.repaint();
 	}
 	
+	private boolean checkRefuting(String s, Player player) {
+		boolean ans=false;
+		List<Card> cards=player.getHand();
+		for(int i=0; i<cards.size(); i++){
+			if(cards.get(i).toString().equals(s)){
+				ans=true;
+				cards.remove(i);
+			}
+		}
+		return ans;
+	}
+
 	private String getCharacterValue(String string) {
 		String var= null;
 		JPanel panel = new JPanel();
