@@ -111,6 +111,17 @@ public class BoardPanel extends JPanel {
 		actionsPanel.setBackground(Color.GRAY);
 		actionsPanel.add(suggestionBtn);
 		// Button listener for suggestion goes here.
+		suggestionBtn.addActionListener((ActionEvent e) -> {
+			//if(board.getCurrentPlayer().inRoom())
+			String weaponS= getWeaponValue("suggestion");
+			String characterS= getCharacterValue("suggestion");
+			
+			Solution ans=board.getSolution();
+			
+			
+
+		});
+		// Button listener for accusation goes here.
 		actionsPanel.add(accusationBtn);
 		accusationBtn.addActionListener((ActionEvent e) -> {
 			String roomA= getRoomValue("accusation");
@@ -131,7 +142,7 @@ public class BoardPanel extends JPanel {
 
 		});
 		
-		// Button listener for accusation goes here.
+		
 		actionsPanel.add(rollBtn);
 		rollBtn.addActionListener((ActionEvent e) -> {
 			rolledNums = board.getCurrentPlayer().rollDice();
@@ -148,6 +159,7 @@ public class BoardPanel extends JPanel {
 				endFrame.setLayout(new GridBagLayout());
 				endFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				JPanel endPanel= new JPanel();
+				endFrame.add(endPanel);
 				endPanel.setPreferredSize(new Dimension(200,200));
 				String text="The game has been won!!!!"
 						+ "The winner is" + board.getCurrentPlayer().toString();
@@ -233,13 +245,6 @@ public class BoardPanel extends JPanel {
 	}
 	private String getWeaponValue(String string) {
 		String var= null;
-		//weapon names
-		weaponNames.add("");
-		weaponNames.add("");
-		weaponNames.add("");
-		weaponNames.add("");
-		weaponNames.add("");
-		weaponNames.add("");
 		
 		JPanel panel = new JPanel();
 	      JRadioButton candle = new JRadioButton("Candle Stick");
