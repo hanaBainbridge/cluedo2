@@ -462,6 +462,7 @@ public class BoardPanel extends JPanel {
  //=================================================
  
 /**
+ * kdsj;sk;lk;
  * used to aid in code readiblity 
  * */	
   public void intaliseArrays(){
