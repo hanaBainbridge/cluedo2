@@ -209,8 +209,10 @@ public class BoardPanel extends JPanel {
 			roll = false; // Allows the next player to roll.
 			rolledNums = null; // Resets the numbers rolled for the next turn 
 			this.repaint();
-			remove(dice1);
-			remove(dice2);
+			if(dice1 != null) {remove(dice1);}
+			if(dice2 != null) {remove(dice2);}
+			currentMoves = 0;
+			this.revalidate();
 		});
 		
 		
@@ -448,6 +450,7 @@ public class BoardPanel extends JPanel {
 		public void mousePressed(MouseEvent e) {
 			// The player has to rolled before moving.
 			if(rolledNums != null && currentMoves < rolledNums[0] + rolledNums[1]) {
+				currentMoves ++;
 				Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
 				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
 				System.out.println(validPoints.toString());
