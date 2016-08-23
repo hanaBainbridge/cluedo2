@@ -64,8 +64,8 @@ public class BoardPanel extends JPanel {
 	private ImageIcon boardImage = new ImageIcon("board2.png"); // The image of the board which the game will be played on.
 	private JLabel[] currentPlayerCards; // Stores the images of the player cards. 
 	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>(); // Stores the images representing the players.
-	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>(); // Stores the images showing the different dice face.
-	private ArrayList<Point> startingPos= new ArrayList<Point>(); 
+	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>(); // Stores the images showing the different dice face. 
+	private ArrayList<Point> startingPos = new ArrayList<Point>();
 	private Board board; // The board object which hold information about the game being played.
 	//felilds to create solution for accuation and suggestion
 	private ArrayList<String> roomNames = new ArrayList<String>();
@@ -88,18 +88,11 @@ public class BoardPanel extends JPanel {
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		gbc.anchor = GridBagConstraints.LAST_LINE_START;
+		
 		this.setLayout(new GridBagLayout()); // Sets the layout.
 		this.setPreferredSize(new Dimension(600, 600)); // Sets the size.
 		this.setBackground(Color.WHITE); // Sets the background colour.
 		this.setVisible(true);
-		
-		// Initializes the dice images.
-		diceIcons.add(new ImageIcon("d1.png"));
-		diceIcons.add(new ImageIcon("d2.png"));
-		diceIcons.add(new ImageIcon("d3.png"));
-		diceIcons.add(new ImageIcon("d4.png"));
-		diceIcons.add(new ImageIcon("d5.png"));
-		diceIcons.add(new ImageIcon("d6.png"));
 
 		this.add(cardsPanel, gbc);
 		gbc.gridx++;
@@ -453,7 +446,6 @@ public class BoardPanel extends JPanel {
 				currentMoves ++;
 				Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
 				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
-				System.out.println(validPoints.toString());
 				// Check if the mouse click was in any of the valid squares.
 				for(Point p: validPoints) {
 					// Point valid if inside the square
@@ -493,12 +485,20 @@ public class BoardPanel extends JPanel {
 		playerIcons.add(new ImageIcon("p5.jpg"));
 		playerIcons.add(new ImageIcon("p6.jpg"));
 		
+		// Initializes the dice images.
+		diceIcons.add(new ImageIcon("d1.png"));
+		diceIcons.add(new ImageIcon("d2.png"));
+		diceIcons.add(new ImageIcon("d3.png"));
+		diceIcons.add(new ImageIcon("d4.png"));
+		diceIcons.add(new ImageIcon("d5.png"));
+		diceIcons.add(new ImageIcon("d6.png"));
+		
 		//player starting co-ordinates.
-		startingPos.add(new Point(BOARDX + 9*SQUARE_WIDTH, BOARDY + 0*SQUARE_HEIGHT));
-		startingPos.add(new Point(BOARDX + 15*SQUARE_WIDTH, BOARDY + 0*SQUARE_HEIGHT));
-		startingPos.add(new Point(BOARDX + 24*SQUARE_WIDTH, BOARDY + 6*SQUARE_HEIGHT));
-		startingPos.add(new Point(BOARDX + 24*SQUARE_WIDTH, BOARDY + 19*SQUARE_HEIGHT));
-		startingPos.add(new Point(BOARDX + 7*SQUARE_WIDTH, BOARDY + 24*SQUARE_HEIGHT));
-		startingPos.add(new Point(BOARDX + 0*SQUARE_WIDTH, BOARDY + 17*SQUARE_HEIGHT));
+		startingPos.add(new Point((BOARDX + SQUARE_WIDTH/4) + 9*SQUARE_WIDTH, BOARDY  + 0*SQUARE_HEIGHT));
+		startingPos.add(new Point((BOARDX + SQUARE_WIDTH/4) + 15*SQUARE_WIDTH, BOARDY + 0*SQUARE_HEIGHT));
+		startingPos.add(new Point((BOARDX + SQUARE_WIDTH/4) + 24*SQUARE_WIDTH, BOARDY + 6*SQUARE_HEIGHT));
+		startingPos.add(new Point((BOARDX + SQUARE_WIDTH/4) + 24*SQUARE_WIDTH, BOARDY + 19*SQUARE_HEIGHT));
+		startingPos.add(new Point((BOARDX + SQUARE_WIDTH/4) + 7*SQUARE_WIDTH, BOARDY + 24*SQUARE_HEIGHT));
+		startingPos.add(new Point((BOARDX + SQUARE_WIDTH/4) + 0*SQUARE_WIDTH, BOARDY + 17*SQUARE_HEIGHT));
   }
 }
