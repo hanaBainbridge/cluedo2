@@ -122,7 +122,7 @@ public class Board {
 			weaponCards.remove(randomIndex); // Removes the solution weapon.
 		} 
 
-		randomIndex = (int) (Math.random() * 8) + 1;
+		randomIndex = (int) (Math.random() * 5) + 1; 
 		RoomCard room = roomCards.get(randomIndex); // Selects a random room card.
 		if (startingSol) {
 			roomCards.remove(randomIndex);

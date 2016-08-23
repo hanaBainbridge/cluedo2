@@ -449,9 +449,7 @@ public class BoardPanel extends JPanel {
 			// Check if the mouse click was in any of the valid squares.
 			for(Point p: validPoints) {
 				// Point valid if inside the square
-				boolean a = mousePoint.x >= p.x && mousePoint.x < p.x + SQUARE_WIDTH;
-				boolean b = mousePoint.y >= p.y && mousePoint.y < p.y + SQUARE_HEIGHT;
-				if((mousePoint.x >= p.x && mousePoint.x < p.x + SQUARE_WIDTH) && (mousePoint.y >= p.y && mousePoint.y < p.y + SQUARE_HEIGHT)) {
+				if((mousePoint.x >= p.x && mousePoint.x < p.x + 2*SQUARE_WIDTH) && (mousePoint.y >= p.y && mousePoint.y < p.y + 2*SQUARE_HEIGHT)) {
 					board.getCurrentPlayer().setPoint(p); // Sets the player's new position
 					BoardPanel.this.repaint();
 					break;
