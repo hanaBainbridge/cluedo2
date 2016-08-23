@@ -54,6 +54,7 @@ public class BoardPanel extends JPanel {
 	private JLabel dice1 = null; // The image of the first dice.
 	private JLabel dice2 = null; // The image of the second dice.
 	private int[] rolledNums = null; // The numbers of the two dice.
+	private int currentMoves = 0; // The current number of squares that the player has moved.
 	
 	private JPanel cardsPanel = new JPanel(); // This panel shows the player's cards, as well as their name that they entered.
 	private JLabel playerName = null; // Displays the player's name.
@@ -208,6 +209,8 @@ public class BoardPanel extends JPanel {
 			roll = false; // Allows the next player to roll.
 			rolledNums = null; // Resets the numbers rolled for the next turn 
 			this.repaint();
+			remove(dice1);
+			remove(dice2);
 		});
 		
 		
@@ -444,7 +447,7 @@ public class BoardPanel extends JPanel {
 	private class mouseAdapter extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
 			// The player has to rolled before moving.
-			if (rolledNums != null) {
+			if(rolledNums != null && currentMoves < rolledNums[0] + rolledNums[1]) {
 				Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
 				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
 				System.out.println(validPoints.toString());
@@ -459,9 +462,14 @@ public class BoardPanel extends JPanel {
 				}
 			}
 			
-			// If the player has not rolled then show message,
+			// If the player has not rolled or is out of moves, display message.
 			else {
-				JOptionPane.showMessageDialog(null, "You must roll the dice first!", "Roll first!", JOptionPane.ERROR_MESSAGE);
+				if (rolledNums == null) {
+					JOptionPane.showMessageDialog(null, "You must roll the dice first!", "Roll first!", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "You are out of moves!", "Out of moves!", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 	}
