@@ -38,7 +38,7 @@ import cards.Card;
 import cards.CharacterCard;
 import cards.RoomCard;
 import cards.Weapon;
-
+//hidjfkl;as f;la jklf;daj kf;ldaj ;   
 public class BoardPanel extends JPanel {
 	private final int BOARDX = 10;
 	private final int BOARDY = 10;
