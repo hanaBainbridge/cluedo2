@@ -210,7 +210,7 @@ public class BoardPanel extends JPanel {
 		
 		
 		// mouselistener for moving the plaeyrs 
-		addMouseListener(new mouseAdapter());
+		addMouseListener(new MovementAdapter());
 	}
 	
 	private boolean checkRefuting(String s, Player player) {
@@ -439,11 +439,10 @@ public class BoardPanel extends JPanel {
 		new BoardPanel(3);
 	}
 	
-	private class mouseAdapter extends MouseAdapter {
+	private class MovementAdapter extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
 			// The player has to rolled before moving.
 			if(rolledNums != null && currentMoves < rolledNums[0] + rolledNums[1]) {
-				currentMoves ++;
 				Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
 				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
 				// Check if the mouse click was in any of the valid squares.
@@ -451,6 +450,7 @@ public class BoardPanel extends JPanel {
 					// Point valid if inside the square
 					if((mousePoint.x >= p.x && mousePoint.x < p.x + 2*SQUARE_WIDTH) && (mousePoint.y >= p.y && mousePoint.y < p.y + 2*SQUARE_HEIGHT)) {
 						board.getCurrentPlayer().setPoint(p); // Sets the player's new position
+						currentMoves ++; // Only want to counter valid moves.
 						BoardPanel.this.repaint();
 						break;
 					}
