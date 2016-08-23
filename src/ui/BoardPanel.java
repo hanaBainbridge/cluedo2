@@ -459,8 +459,9 @@ public class BoardPanel extends JPanel {
 				}
 			}
 			
+			// If the player has not rolled then show message,
 			else {
-				JOptionPane.showMessageDialog(null, "You must roll the dice first!", "Roll first", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "You must roll the dice first!", "Roll first!", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
