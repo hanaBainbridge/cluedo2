@@ -17,6 +17,8 @@ import cards.Weapon;
 import cards.RoomCard;
 
 public class Board {
+	private final int BOARDX = 10;
+	private final int BOARDY = 10;
 	private final int SQUARE_WIDTH = 23; // The width of a square on the board.
 	private final int SQUARE_HEIGHT = 12; // The height of a square on the board.
 	private int[][] board; // Represents the board as a 2D array 
@@ -42,6 +44,7 @@ public class Board {
 		players = p; // Gets the players for this game.
 		currentPlayer = players.get(currentPlayerIndex); // Sets the current player.
 		initializeCards();
+		initializeBoard();
 		solution = createSolution(true); // Creates the starting solution
 		// Adds all the cards together after the solution cards have been removed.
 		mixedCards.addAll(characterCards); 
@@ -191,22 +194,24 @@ public class Board {
 	public ArrayList<Point> getValidMoves() {
 		ArrayList<Point> validPoints = new ArrayList<Point>(); // Note that these points are the position of the squares in pixels 
 		Point playerPos = currentPlayer.getPlayerCoor();
+		Point playerBoardPos = new Point((playerPos.x/SQUARE_WIDTH), (playerPos.y/SQUARE_HEIGHT)); // This is the player's position on the board (square number)
 		// Check if North is valid
-		if(playerPos.y - 1 > 0 && (board[playerPos.x][playerPos.y-1] == 0 || board[playerPos.x][playerPos.y-1] == 2)) {
-			validPoints.add(new Point(playerPos.x * SQUARE_WIDTH, (playerPos.y - 1) * SQUARE_HEIGHT));
+		if(playerBoardPos.y - 1 > 0 && (board[playerBoardPos.x][playerBoardPos.y-1] == 0 || board[playerBoardPos.x][playerBoardPos.y-1] == 2)) {
+			validPoints.add(new Point(playerBoardPos.x * SQUARE_WIDTH, (playerBoardPos.y - 1) * SQUARE_HEIGHT));
 		}
 		// Check if East is valid
-		if(playerPos.x + 1 < board.length && (board[playerPos.x + 1][playerPos.y] == 0 || board[playerPos.x + 1][playerPos.y] == 2)) {
-			validPoints.add(new Point((playerPos.x + 1) * SQUARE_WIDTH, playerPos.y * SQUARE_HEIGHT));
+		if(playerBoardPos.x + 1 < board.length && (board[playerBoardPos.x + 1][playerBoardPos.y] == 0 || board[playerBoardPos.x + 1][playerBoardPos.y] == 2)) {
+			validPoints.add(new Point((playerBoardPos.x + 1) * SQUARE_WIDTH, playerBoardPos.y * SQUARE_HEIGHT));
 		}
 		// Check if South is valid
-		if(playerPos.y + 1 < board.length && (board[playerPos.x][playerPos.y + 1] == 0 || board[playerPos.x][playerPos.y + 1] == 2)) {
-			validPoints.add(new Point(playerPos.x * SQUARE_WIDTH, (playerPos.y + 1) * SQUARE_HEIGHT));
+		if(playerBoardPos.y + 1 < board.length && (board[playerBoardPos.x][playerBoardPos.y + 1] == 0 || board[playerBoardPos.x][playerBoardPos.y + 1] == 2)) {
+			validPoints.add(new Point(playerBoardPos.x * SQUARE_WIDTH, (playerBoardPos.y + 1) * SQUARE_HEIGHT));
 		}
 		// Check if West is valid
-		if(playerPos.x - -1 > 0 && (board[playerPos.x - 1][playerPos.y] == 0 || board[playerPos.x - 1][playerPos.y] == 2)) {
-			validPoints.add(new Point((playerPos.x - 1) * SQUARE_WIDTH, playerPos.y * SQUARE_HEIGHT));
+		if(playerBoardPos.x - -1 > 0 && (board[playerBoardPos.x - 1][playerBoardPos.y] == 0 || board[playerBoardPos.x - 1][playerBoardPos.y] == 2)) {
+			validPoints.add(new Point((playerBoardPos.x - 1) * SQUARE_WIDTH, playerBoardPos.y * SQUARE_HEIGHT));
 		}
+		System.out.println("hello");
 		return validPoints; // Returns the valid points.
 	}
 	

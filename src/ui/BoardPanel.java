@@ -40,6 +40,8 @@ import cards.RoomCard;
 import cards.Weapon;
 
 public class BoardPanel extends JPanel {
+	private final int BOARDX = 10;
+	private final int BOARDY = 10;
 	private final int SQUARE_WIDTH = 23; // The width of a square on the board.
 	private final int SQUARE_HEIGHT = 12; // The height of a square on the board.
 	private GridBagConstraints gbc = new GridBagConstraints(); // Defines properties about component spacing.
@@ -63,7 +65,7 @@ public class BoardPanel extends JPanel {
 	private JLabel[] currentPlayerCards; // Stores the images of the player cards. 
 	private ArrayList<ImageIcon> playerIcons= new ArrayList<ImageIcon>(); // Stores the images representing the players.
 	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>(); // Stores the images showing the different dice face.
-	private ArrayList<Point> playersCoor= new ArrayList<Point>(); 
+	private ArrayList<Point> startingPos= new ArrayList<Point>(); 
 	private Board board; // The board object which hold information about the game being played.
 	//felilds to create solution for accuation and suggestion
 	private ArrayList<String> roomNames = new ArrayList<String>();
@@ -210,23 +212,7 @@ public class BoardPanel extends JPanel {
 		
 		
 		// mouselistener for moving the plaeyrs 
-		addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				// System.out.println("a");
-				Point mousePoint = new Point(e.getX(), e.getY()); // Gets the point that the mouse was clicked at.
-				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
-				
-				// Check if the mouse click was in any of the valid squares.
-				for(Point p: validPoints) {
-					// Point valid if inside the square
-					if(mousePoint.x >= p.x && mousePoint.x < p.x + SQUARE_WIDTH && mousePoint.y >= p.y && mousePoint.y < p.y + SQUARE_HEIGHT) {
-						board.getCurrentPlayer().setPoint(p);
-						break;
-					}
-				}
-			}
-		});
-		this.repaint();
+		addMouseListener(new mouseAdapter());
 	}
 	
 	private boolean checkRefuting(String s, Player player) {
@@ -403,7 +389,7 @@ public class BoardPanel extends JPanel {
 					"Please chose a character for player " + index, "Character selection",
 					JOptionPane.INFORMATION_MESSAGE, null, characters.toArray(), characters.get(0));
 			characters.remove(character);
-			return new Player(playerIcons.get(index - 1), playersCoor.get(index - 1), character, name);
+			return new Player(playerIcons.get(index - 1), startingPos.get(index - 1), character, name);
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(null, "Game will now crash you have not entered any information for a field",
 					"Fatal error!", JOptionPane.ERROR_MESSAGE);
@@ -445,7 +431,7 @@ public class BoardPanel extends JPanel {
 			cardsPanel.add(currentPlayerCards[i]);
 		}
 		for(int i=0; i<players.size(); i++){
-			playerIcons.get(i).paintIcon(this, g, (int)playersCoor.get(i).getX(),(int)playersCoor.get(i).getY());
+			playerIcons.get(i).paintIcon(this, g, (int)players.get(i).getPlayerCoor().getX(),(int)players.get(i).getPlayerCoor().getY());
 		}		
 		
 		this.revalidate();
@@ -453,6 +439,23 @@ public class BoardPanel extends JPanel {
 	
 	public static void main(String[] args) {
 		new BoardPanel(3);
+	}
+	
+	private class mouseAdapter extends MouseAdapter {
+		public void mousePressed(MouseEvent e) {
+			Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
+			ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
+			System.out.println(validPoints.toString());
+			// Check if the mouse click was in any of the valid squares.
+			for(Point p: validPoints) {
+				// Point valid if inside the square
+				if((mousePoint.x >= p.x && mousePoint.x < p.x + SQUARE_WIDTH) && (mousePoint.y >= p.y && mousePoint.y < p.y + SQUARE_HEIGHT)) {
+					board.getCurrentPlayer().setPoint(p); // Sets the player's new position
+					BoardPanel.this.repaint();
+					break;
+				}
+			}
+		}
 	}
  //=================================================
  //============HELPER METHODS=======================
@@ -471,12 +474,12 @@ public class BoardPanel extends JPanel {
 		playerIcons.add(new ImageIcon("p5.jpg"));
 		playerIcons.add(new ImageIcon("p6.jpg"));
 		
-		//player corrants
-		playersCoor.add(new Point(225,5));
-		playersCoor.add(new Point(365,5));
-		playersCoor.add(new Point(575,95));
-		playersCoor.add(new Point(575,305));
-		playersCoor.add(new Point(175,380));
-		playersCoor.add(new Point(11,270));
+		//player starting co-ordinates.
+		startingPos.add(new Point(BOARDX + 9*SQUARE_WIDTH, BOARDY + 0*SQUARE_HEIGHT));
+		startingPos.add(new Point(BOARDX + 15*SQUARE_WIDTH, BOARDY + 0*SQUARE_HEIGHT));
+		startingPos.add(new Point(BOARDX + 24*SQUARE_WIDTH, BOARDY + 6*SQUARE_HEIGHT));
+		startingPos.add(new Point(BOARDX + 24*SQUARE_WIDTH, BOARDY + 19*SQUARE_HEIGHT));
+		startingPos.add(new Point(BOARDX + 7*SQUARE_WIDTH, BOARDY + 24*SQUARE_HEIGHT));
+		startingPos.add(new Point(BOARDX + 0*SQUARE_WIDTH, BOARDY + 17*SQUARE_HEIGHT));
   }
 }
