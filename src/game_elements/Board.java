@@ -148,8 +148,7 @@ public class Board {
 	 * Initializes the board.
 	 */
 	private void initializeBoard() {
-		// Initializes the board.
-		// kjlkjlk
+		// Initializes the board
 		/*
 		 * Key:
 		 * -1 = Wall
