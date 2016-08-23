@@ -1,4 +1,3 @@
-//hi connor
 package game_elements;
 
 import java.awt.Point;
@@ -122,11 +121,11 @@ public class Board {
 			weaponCards.remove(randomIndex); // Removes the solution weapon.
 		} 
 
-		randomIndex = (int) (Math.random() * 5) + 1; 
+		randomIndex = (int) (Math.random() * 5) + 1;
 		RoomCard room = roomCards.get(randomIndex); // Selects a random room card.
 		if (startingSol) {
 			roomCards.remove(randomIndex);
-		}
+		}   
 		return new Solution(character, weapon, room); // Returns the solution object.
 	}
 	
@@ -149,8 +148,7 @@ public class Board {
 	 * Initializes the board.
 	 */
 	private void initializeBoard() {
-		// Initializes the board.
-		// kjlkjlk
+		// Initializes the board
 		/*
 		 * Key:
 		 * -1 = Wall
