@@ -207,6 +207,7 @@ public class BoardPanel extends JPanel {
 			board.nextPlayer(); // Move to the next player.
 			getCurrentPlayerCardImages(); // Gets the next player's cards
 			roll = false; // Allows the next player to roll.
+			rolledNums = null; // Resets the numbers rolled for the next turn 
 			this.repaint();
 		});
 		
@@ -443,17 +444,24 @@ public class BoardPanel extends JPanel {
 	
 	private class mouseAdapter extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
-			Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
-			ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
-			System.out.println(validPoints.toString());
-			// Check if the mouse click was in any of the valid squares.
-			for(Point p: validPoints) {
-				// Point valid if inside the square
-				if((mousePoint.x >= p.x && mousePoint.x < p.x + 2*SQUARE_WIDTH) && (mousePoint.y >= p.y && mousePoint.y < p.y + 2*SQUARE_HEIGHT)) {
-					board.getCurrentPlayer().setPoint(p); // Sets the player's new position
-					BoardPanel.this.repaint();
-					break;
+			// The player has to rolled before moving.
+			if (rolledNums != null) {
+				Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
+				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
+				System.out.println(validPoints.toString());
+				// Check if the mouse click was in any of the valid squares.
+				for(Point p: validPoints) {
+					// Point valid if inside the square
+					if((mousePoint.x >= p.x && mousePoint.x < p.x + 2*SQUARE_WIDTH) && (mousePoint.y >= p.y && mousePoint.y < p.y + 2*SQUARE_HEIGHT)) {
+						board.getCurrentPlayer().setPoint(p); // Sets the player's new position
+						BoardPanel.this.repaint();
+						break;
+					}
 				}
+			}
+			
+			else {
+				JOptionPane.showMessageDialog(null, "You must roll the dice first!", "Roll first", JOptionPan);
 			}
 		}
 	}
