@@ -212,7 +212,6 @@ public class BoardPanel extends JPanel {
 			}
 			
 			boolean validNextPlayer=false;
-			System.out.println("indexx first="+ board.getCurrentIndex());
 			while(!validNextPlayer){
 				int index=board.getCurrentIndex();
 				ArrayList<Player> players= board.getPlayers();
@@ -222,7 +221,6 @@ public class BoardPanel extends JPanel {
 			    }
 			    board.nextPlayer();
 			}
-			board.nextPlayer();
 			board.nextPlayer(); // Move to the next player.
 			getCurrentPlayerCardImages(); // Gets the next player's cards
 			roll = false; // Allows the next player to roll.
@@ -231,6 +229,25 @@ public class BoardPanel extends JPanel {
 			if(dice1 != null) {remove(dice1);}
 			if(dice2 != null) {remove(dice2);}
 			currentMoves = 0;
+			// If the player is in a room.
+			if(board.getCurrentPlayer().getRoom() != null) {
+				ArrayList<Point> exits = board.getCurrentPlayer().getRoom().getEntryPoints();
+				Object[] possiblities = new Object[exits.size()];
+				for (int i = 0; i < possiblities.length; i++) {
+					possiblities[i] = exits.get(i).toString();
+				}
+				Object selectedValue = JOptionPane.showInputDialog(null,
+						"Please select an exit", "Select exit",
+						JOptionPane.INFORMATION_MESSAGE, null,
+						possiblities, possiblities[0]); 
+				for(Point p: exits) {
+					if(p.toString().equals(selectedValue)) {
+						board.getCurrentPlayer().setPoint(new Point(((p.x * SQUARE_WIDTH) + SQUARE_WIDTH/2), (((p.y - 1) * SQUARE_HEIGHT)) + SQUARE_HEIGHT/2));
+						board.getCurrentPlayer().setRoom(null);
+						break;
+					}
+				}
+			}
 			this.revalidate();
 		});
 		
