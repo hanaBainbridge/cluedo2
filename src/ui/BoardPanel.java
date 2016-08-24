@@ -254,13 +254,13 @@ public class BoardPanel extends JPanel {
 						possiblities, possiblities[0]); 
 				for(Point p: exits) {
 					if(p.toString().equals(selectedValue)) {
-						board.getCurrentPlayer().setPoint(new Point(((p.x * SQUARE_WIDTH) + SQUARE_WIDTH/2), (((p.y - 1) * SQUARE_HEIGHT)) + SQUARE_HEIGHT/2));
+						board.getCurrentPlayer().setPoint(new Point(((p.x * SQUARE_WIDTH) + SQUARE_WIDTH/2), ((p.y * SQUARE_HEIGHT) + SQUARE_HEIGHT/2)));
 						board.getCurrentPlayer().setRoom(null);
 						break;
 					}
 				}
 			}
-			this.revalidate();
+			this.repaint();
 		});
 		
 		
