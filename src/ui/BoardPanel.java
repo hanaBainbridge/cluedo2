@@ -67,11 +67,7 @@ public class BoardPanel extends JPanel {
 	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>(); // Stores the images showing the different dice face. 
 	private ArrayList<Point> startingPos = new ArrayList<Point>();
 	private Board board; // The board object which hold information about the game being played.
-	//felilds to create solution for accuation and suggestion
-	private ArrayList<String> roomNames = new ArrayList<String>();
-	private ArrayList<String> weaponNames = new ArrayList<String>();
-	private ArrayList<String> characterNames = new ArrayList<String>();
-
+	
 
 	/**
 	 * The constructor for the Board panel that set up the GUI for the actual game.
@@ -111,9 +107,16 @@ public class BoardPanel extends JPanel {
 		actionsPanel.setBackground(Color.GRAY);
 		actionsPanel.add(suggestionBtn);
 		suggestionBtn.addActionListener((ActionEvent e) -> {
-			//if(board.getCurrentPlayer().inRoom())
-			String character = getCharacterValue("suggestion");
-			String weapon = getWeaponValue("suggestion");
+			if(board.getCurrentPlayer().getRoom()!=null){
+			String character = null;
+			String weapon = null;
+			while(character==null){
+				character = getCharacterValue("suggestion");
+			}
+			while(weapon==null){
+				 weapon = getWeaponValue("suggestion");
+				
+			}
 			//allow the players to refute the suggestion 
 			int index=board.getCurrentIndex(); // Stores the current player's index.
 			ArrayList<Player> players= board.getPlayers(); // Gets the players.
@@ -145,27 +148,37 @@ public class BoardPanel extends JPanel {
 					}
 				}
 			}
-			
+		  }
 		});
 		// Button listener for accusation goes here.
 		actionsPanel.add(accusationBtn);
 		accusationBtn.addActionListener((ActionEvent e) -> {
-			String roomA= getRoomValue("accusation");
-			String weaponA= getWeaponValue("accusation");
-			String characterA= getCharacterValue("accusation");
-			
+			String roomA= null;
+			String weaponA= null;
+			String characterA=null;
+			while(roomA==null){
+				roomA= getRoomValue("accusation");
+					
+			}
+			while(weaponA==null){
+				 weaponA= getWeaponValue("accusation");
+			}
+			while(characterA==null){
+			      characterA= getCharacterValue("accusation");		
+			}
 			Solution ans=board.getSolution();
 			if(ans.getRoomCard().toString().equals(roomA) &&
 			   ans.getWeaponCard().toString().equals(weaponA) &&	
 			   ans.getCharacterCard().toString().equals(characterA)){
 				board.setWon(false);
+				JOptionPane.showMessageDialog(null, "Your accusation is correct!", "Accusaiton correct!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
 				Player cPlayer=board.getCurrentPlayer();
 				cPlayer.eleimatePlayer();
+				board.removePlayer(cPlayer);
+			    JOptionPane.showMessageDialog(null, "Your assuation was incorrect!\n You are elemated from the game.", "Accusation incorrect!", JOptionPane.INFORMATION_MESSAGE);
 			}
-			
-
 		});
 		
 		
@@ -182,7 +195,7 @@ public class BoardPanel extends JPanel {
 		actionsPanel.add(endTurn);
 		endTurn.addActionListener((ActionEvent e) -> {
 			// Checks if the game has been won.
-			if(!board.getGameStatus()){ 
+			if(!board.getGameStatus() || board.getPlayers().size()==1){ 
 				JFrame endFrame= new JFrame("GAME WON!!!!!!!");
 				endFrame.setSize(200,500);
 				endFrame.setVisible(true);
@@ -196,8 +209,18 @@ public class BoardPanel extends JPanel {
 				JLabel endText= new JLabel(text);
 				endPanel.add(endText);	
 			}
-			
-			board.nextPlayer(); // Move to the next player.
+			boolean validNextPlayer=false;
+			System.out.println("indexx first="+ board.getCurrentIndex());
+			while(!validNextPlayer){
+				int index=board.getCurrentIndex();
+				ArrayList<Player> players= board.getPlayers();
+			    if(!players.get(index).isEliminated()){
+			    	validNextPlayer=true;
+			    	break;
+			    }
+			    board.nextPlayer();
+			}
+			board.nextPlayer();
 			getCurrentPlayerCardImages(); // Gets the next player's cards
 			roll = false; // Allows the next player to roll.
 			rolledNums = null; // Resets the numbers rolled for the next turn 
@@ -214,17 +237,14 @@ public class BoardPanel extends JPanel {
 	}
 	
 	private boolean checkRefuting(String s, Player player) {
-		boolean ans=false;
 		List<Card> cards=player.getHand(); // This is a good start but this will only remove the card from the player's hand, we also want to remove it from the overall cards.
 		for(int i=0; i<cards.size(); i++){
 			if(cards.get(i).toString().equals(s)) {
-				ans=true;
 				cards.remove(i);
-				// Should there be a break statement in here? The player can only refute using one card.
-				// Or what about returning after the card is removed.
+				return true;
 			}
 		}
-		return ans;
+		return false;
 	}
 
 	private String getCharacterValue(String string) {

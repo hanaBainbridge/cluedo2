@@ -291,5 +291,8 @@ public class Board {
 	 */
 	public ArrayList<Player> getPlayers(){
 		return players;
-	}	
+	}
+	public void removePlayer(Player p){
+		players.remove(p);
+	}
 }
