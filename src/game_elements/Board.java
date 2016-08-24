@@ -27,7 +27,7 @@ public class Board {
 	private ArrayList<CharacterCard> characterCards = new ArrayList<CharacterCard>(); // Character cards.
 	private ArrayList<Weapon> weaponCards = new ArrayList<Weapon>(); // Weapon cards.
 	private ArrayList<RoomCard> roomCards = new ArrayList<RoomCard>(); // Room cards.
-	private ArrayList<Room> rooms; // These are the actual Rooms
+	private ArrayList<Room> rooms = new ArrayList<Room>(); // These are the actual Rooms
 	private ArrayList<Card> mixedCards = new ArrayList<Card>(); // Used to shuffle the cards
 	private Solution solution; // The solution to the game.
 	private boolean gameNotWon = true; // Keeps the game playing while true
@@ -44,6 +44,7 @@ public class Board {
 		currentPlayer = players.get(currentPlayerIndex); // Sets the current player.
 		initializeCards();
 		initializeBoard();
+		initializeRooms();
 		solution = createSolution(true); // Creates the starting solution
 		// Adds all the cards together after the solution cards have been removed.
 		mixedCards.addAll(characterCards); 
@@ -148,7 +149,49 @@ public class Board {
 	 */
 	private void initializeRooms() {
 		ArrayList<Point> entrances = new ArrayList<Point>();
+		entrances.add(new Point(5,4));
+		entrances.add(new Point(4,6));
+		rooms.add(new Room(entrances, "Kitchen"));
 		
+		entrances = new ArrayList<Point>();
+		entrances.add(new Point(7, 12));
+		entrances.add(new Point(6,15));
+		rooms.add(new Room(entrances, "Dinning Room"));
+		
+		entrances = new ArrayList<Point>();
+		entrances.add(new Point(5,19));
+		rooms.add(new Room(entrances, "Lounge"));
+		
+		entrances = new ArrayList<Point>();
+		entrances.add(new Point(11,18));
+		entrances.add(new Point(12,18));
+		entrances.add(new Point(13, 18));
+		entrances.add(new Point(15, 20));
+		rooms.add(new Room(entrances, "Hall"));
+		
+		entrances = new ArrayList<Point>();
+		entrances.add(new Point(19,21));
+		rooms.add(new Room(entrances, "Study"));
+		
+		entrances = new ArrayList<Point>();
+		entrances.add(new Point(18,15));
+		entrances.add(new Point(21,14));
+		rooms.add(new Room(entrances, "Library"));
+		
+		entrances = new ArrayList<Point>();
+		entrances.add(new Point(23, 12));
+		entrances.add(new Point(19, 9));
+		rooms.add(new Room(entrances, "Billard"));
+		
+		entrances.add(new Point(19,4));
+		rooms.add(new Room(entrances, "Conservatory"));
+		
+		entrances = new ArrayList<Point>();
+		entrances.add(new Point(16, 6));
+		entrances.add(new Point(15, 8));
+		entrances.add(new Point(9, 8));
+		entrances.add(new Point(8, 6));
+		rooms.add(new Room(entrances, "Ball Room"));
 	}
 	
 	/**
@@ -283,6 +326,20 @@ public class Board {
 	 */
 	public int getCurrentIndex() {
 			return currentPlayerIndex;
+	}
+	
+	/**
+	 * Method that finds the room with the given entry point.
+	 * @param p, the entry point.
+	 * @return a Room object if it is a entry or null if no room found.
+	 */
+	public Room findRoom(Point p) {
+		for(Room r: rooms) {
+			if(r.containsEntry(p.x, p.y)) {
+				return r;
+			}
+		}
+		return null;
 	}
 	
 	/**

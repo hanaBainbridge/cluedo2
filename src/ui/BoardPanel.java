@@ -174,6 +174,7 @@ public class BoardPanel extends JPanel {
 				JOptionPane.showMessageDialog(null, "Your accusation is correct!", "Accusaiton correct!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
+				
 				Player cPlayer=board.getCurrentPlayer();
 				cPlayer.eleimatePlayer();
 				board.removePlayer(cPlayer);
@@ -209,6 +210,7 @@ public class BoardPanel extends JPanel {
 				JLabel endText= new JLabel(text);
 				endPanel.add(endText);	
 			}
+			
 			boolean validNextPlayer=false;
 			System.out.println("indexx first="+ board.getCurrentIndex());
 			while(!validNextPlayer){
@@ -221,6 +223,7 @@ public class BoardPanel extends JPanel {
 			    board.nextPlayer();
 			}
 			board.nextPlayer();
+			board.nextPlayer(); // Move to the next player.
 			getCurrentPlayerCardImages(); // Gets the next player's cards
 			roll = false; // Allows the next player to roll.
 			rolledNums = null; // Resets the numbers rolled for the next turn 
@@ -461,8 +464,8 @@ public class BoardPanel extends JPanel {
 	
 	private class MovementAdapter extends MouseAdapter {
 		public void mousePressed(MouseEvent e) {
-			// The player has to rolled before moving.
-			if(rolledNums != null && currentMoves < rolledNums[0] + rolledNums[1]) {
+			// The player has to rolled before moving, have enough moves and no be in a room.
+			if(rolledNums != null && currentMoves < rolledNums[0] + rolledNums[1] && board.getCurrentPlayer().getRoom() == null) {
 				Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
 				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
 				// Check if the mouse click was in any of the valid squares.
@@ -470,6 +473,12 @@ public class BoardPanel extends JPanel {
 					// Point valid if inside the square
 					if((mousePoint.x >= validPoints.get(i).x && mousePoint.x < validPoints.get(i).x + 1.5*SQUARE_WIDTH) && (mousePoint.y >= validPoints.get(i).y && mousePoint.y < validPoints.get(i).y + 1.5*SQUARE_HEIGHT)) {
 						board.getCurrentPlayer().setPoint(validPoints.get(i)); // Sets the player's new position
+						
+						// If the player is at an entrance to a room
+						if(board.getBoardValue(validPoints.get(i+1)) == 2) {
+							board.getCurrentPlayer().setRoom(board.findRoom(validPoints.get(i+1)));
+							JOptionPane.showMessageDialog(null, "You are now in a room and can make a suggestion if you chose", "Making suggestions", JOptionPane.INFORMATION_MESSAGE);
+						}
 						// Used to debug System.out.println("" + validPoints.get(i+1).x + " " + validPoints.get(i+1).y + " = " + board.getBoardValue(validPoints.get(i+1)));
 						currentMoves ++; // Only want to counter valid moves.
 						BoardPanel.this.repaint();
@@ -483,8 +492,11 @@ public class BoardPanel extends JPanel {
 				if (rolledNums == null) {
 					JOptionPane.showMessageDialog(null, "You must roll the dice first!", "Roll first!", JOptionPane.ERROR_MESSAGE);
 				}
-				else {
+				else if (currentMoves == rolledNums[0] + rolledNums[1]){
 					JOptionPane.showMessageDialog(null, "You are out of moves!", "Out of moves!", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "You are in a room, you cannot move again this turn!", "In Room!", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
