@@ -1,3 +1,5 @@
+//master comment
+
 package ui;
 
 import game_elements.Board;
@@ -110,6 +112,7 @@ public class BoardPanel extends JPanel {
 			if(board.getCurrentPlayer().getRoom()!=null){
 			String character = null;
 			String weapon = null;
+			String room=board.getCurrentPlayer().getRoom().toString();
 			while(character==null){
 				character = getCharacterValue("suggestion");
 			}
@@ -126,7 +129,10 @@ public class BoardPanel extends JPanel {
 				if(i!=index){
 					boolean refutingCharacter=checkRefuting(character,players.get(i));  
 					boolean refutingWeapon=checkRefuting(weapon,players.get(i));
-					if(refutingWeapon || refutingCharacter){
+					boolean refutingRoom=checkRefuting(room, players.get(i));
+				    boolean refuted=false;
+					if(refutingWeapon || refutingCharacter || refutingRoom){
+						refuted=true;
 						String text="a player has refted your suggestion\n"
 								+ " it is now the next players turn.";
 						JPanel outcome=new JPanel();
@@ -138,9 +144,8 @@ public class BoardPanel extends JPanel {
 						break;
 						
 					}
-					else{
-						String text= "player" + players.get(i).toString() +"has "
-								+ "not refutedd your seggestion";
+					else{ //if(!refuted){
+						String text="No body refuted your seggestion";
 						JPanel outcome=new JPanel();
 						JLabel outcomeText= new JLabel(text);
 						outcome.add(outcomeText);
@@ -149,6 +154,9 @@ public class BoardPanel extends JPanel {
 				}
 			}
 		  }
+			else{
+				JOptionPane.showMessageDialog(null, "You are not in a room. You cannot make a suggestion", "invalid option!", JOptionPane.ERROR_MESSAGE);
+			}
 		});
 		// Button listener for accusation goes here.
 		actionsPanel.add(accusationBtn);
@@ -157,8 +165,7 @@ public class BoardPanel extends JPanel {
 			String weaponA= null;
 			String characterA=null;
 			while(roomA==null){
-				roomA= getRoomValue("accusation");
-					
+				roomA= getRoomValue("accusation");		
 			}
 			while(weaponA==null){
 				 weaponA= getWeaponValue("accusation");
@@ -174,10 +181,14 @@ public class BoardPanel extends JPanel {
 				JOptionPane.showMessageDialog(null, "Your accusation is correct!", "Accusaiton correct!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
-				
 				Player cPlayer=board.getCurrentPlayer();
+				System.out.println("c indexx="+board.getPlayers().indexOf(cPlayer));
+			
 				cPlayer.eleimatePlayer();
-				board.removePlayer(cPlayer);
+				int index=board.getPlayers().indexOf(cPlayer)+1;
+				System.out.println("next"+board.getPlayers().get(index));
+				System.out.println("status"+board.getPlayers().get(index).isEliminated());
+				System.out.println(cPlayer.isEliminated());
 			    JOptionPane.showMessageDialog(null, "Your assuation was incorrect!\n You are elemated from the game.", "Accusation incorrect!", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -219,6 +230,7 @@ public class BoardPanel extends JPanel {
 			    	validNextPlayer=true;
 			    	break;
 			    }
+			 
 			    board.nextPlayer();
 			}
 			board.nextPlayer(); // Move to the next player.
