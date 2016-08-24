@@ -144,6 +144,14 @@ public class Board {
 	}
 	
 	/**
+	 * Method that initializes the Room objects
+	 */
+	private void initializeRooms() {
+		ArrayList<Point> entrances = new ArrayList<Point>();
+		
+	}
+	
+	/**
 	 * Initializes the board.
 	 */
 	private void initializeBoard() {

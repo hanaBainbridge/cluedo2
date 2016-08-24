@@ -450,7 +450,7 @@ public class BoardPanel extends JPanel {
 					// Point valid if inside the square
 					if((mousePoint.x >= validPoints.get(i).x && mousePoint.x < validPoints.get(i).x + 1.5*SQUARE_WIDTH) && (mousePoint.y >= validPoints.get(i).y && mousePoint.y < validPoints.get(i).y + 1.5*SQUARE_HEIGHT)) {
 						board.getCurrentPlayer().setPoint(validPoints.get(i)); // Sets the player's new position
-						System.out.println("" + validPoints.get(i+1).x + " " + validPoints.get(i+1).y + " = " + board.getBoardValue(validPoints.get(i+1)));
+						// Used to debug System.out.println("" + validPoints.get(i+1).x + " " + validPoints.get(i+1).y + " = " + board.getBoardValue(validPoints.get(i+1)));
 						currentMoves ++; // Only want to counter valid moves.
 						BoardPanel.this.repaint();
 						break;
