@@ -86,7 +86,7 @@ public class BoardPanel extends JPanel {
 		gbc.anchor = GridBagConstraints.LAST_LINE_START;
 		
 		this.setLayout(new GridBagLayout()); // Sets the layout.
-		this.setPreferredSize(new Dimension(600, 600)); // Sets the size.
+		this.setPreferredSize(new Dimension(600, 600)); // Sets the size. jhkjhkj
 		this.setBackground(Color.WHITE); // Sets the background colour.
 		this.setVisible(true);
 
