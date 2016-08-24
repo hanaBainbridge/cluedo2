@@ -172,7 +172,7 @@ public class Board {
 				{ -1, -1, 1, 1, 1, 1, 1, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1,0, 2, 1, 1, 1, 1, 1, -1 }, // x13
 				{ -1, -1, 1, 1, 1, 1, 1, -1, 0, 0, -1, -1, -1, -1, -1, -1, -1,0, -1, 1, 1, 1, 1, 1, -1 }, // x14
 				{ -1, 0, -1, 1, 1, 1, 1, 2, 0, 0, -1, -1, -1, -1, -1, -1, -1,0, -1, -1, 2, -1, -1, -1, -1 }, // x15
-				{ -1, 0, -1, -1, -1, 2, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, -1 }, // x16
+				{ -1, 0, -1, -1, -1, -1, 2, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, -1 }, // x16
 				{ -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0 }, // x17
 				{ -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 2, -1, 0,0, 0, -1, -1, -1, -1 }, // x18
 				{ -1, -1, -1, -1, 2, -1, 0, 0, -1, 2, -1, -1, -1, 0, -1, 1, 1,1, -1, 0, 0, 2, 1, 1, -1 }, // x19
@@ -196,18 +196,22 @@ public class Board {
 		// Check if North is valid
 		if(playerBoardPos.y - 1 > 0 && (board[playerBoardPos.x][playerBoardPos.y-1] == 0 || board[playerBoardPos.x][playerBoardPos.y-1] == 2)) {
 			validPoints.add(new Point(((playerBoardPos.x * SQUARE_WIDTH) + SQUARE_WIDTH/2), (((playerBoardPos.y - 1) * SQUARE_HEIGHT)) + SQUARE_HEIGHT/2));
+			validPoints.add(new Point(playerBoardPos.x, playerBoardPos.y - 1));
 		}
 		// Check if East is valid
 		if(playerBoardPos.x + 1 < board.length && (board[playerBoardPos.x + 1][playerBoardPos.y] == 0 || board[playerBoardPos.x + 1][playerBoardPos.y] == 2)) {
 			validPoints.add(new Point((((playerBoardPos.x + 1) * SQUARE_WIDTH) + SQUARE_WIDTH/2), (playerBoardPos.y * SQUARE_HEIGHT) + SQUARE_HEIGHT/2));
+			validPoints.add(new Point(playerBoardPos.x + 1, playerBoardPos.y));
 		}
 		// Check if South is valid
 		if(playerBoardPos.y + 1 < board.length && (board[playerBoardPos.x][playerBoardPos.y + 1] == 0 || board[playerBoardPos.x][playerBoardPos.y + 1] == 2)) {
 			validPoints.add(new Point((playerBoardPos.x * SQUARE_WIDTH) + SQUARE_WIDTH/2, ((playerBoardPos.y + 1) * SQUARE_HEIGHT) + SQUARE_HEIGHT/2));
+			validPoints.add(new Point(playerBoardPos.x, playerBoardPos.y + 1));
 		}
 		// Check if West is valid
 		if(playerBoardPos.x - -1 > 0 && (board[playerBoardPos.x - 1][playerBoardPos.y] == 0 || board[playerBoardPos.x - 1][playerBoardPos.y] == 2)) {
 			validPoints.add(new Point((((playerBoardPos.x - 1) * SQUARE_WIDTH) + SQUARE_WIDTH/2), (playerBoardPos.y * SQUARE_HEIGHT) + SQUARE_HEIGHT/2));
+			validPoints.add(new Point(playerBoardPos.x - 1, playerBoardPos.y));
 		}
 		return validPoints; // Returns the valid points.
 	}
@@ -217,6 +221,10 @@ public class Board {
 	 * @return Player, the current player.
 	 */
 	public Player getCurrentPlayer() {return currentPlayer;}
+	
+	public int getBoardValue(Point p) {
+		return board[p.x][p.y];
+	}
 	
 	/**
 	 * Method that returns the solution to the game.

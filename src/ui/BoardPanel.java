@@ -446,10 +446,11 @@ public class BoardPanel extends JPanel {
 				Point mousePoint = e.getPoint(); // Gets the point that the mouse was clicked at.
 				ArrayList<Point> validPoints = board.getValidMoves(); // Gets the valid points on the board that we can move to.
 				// Check if the mouse click was in any of the valid squares.
-				for(Point p: validPoints) {
+				for(int i = 0; i < validPoints.size(); i += 2) {
 					// Point valid if inside the square
-					if((mousePoint.x >= p.x && mousePoint.x < p.x + 2*SQUARE_WIDTH) && (mousePoint.y >= p.y && mousePoint.y < p.y + 2*SQUARE_HEIGHT)) {
-						board.getCurrentPlayer().setPoint(p); // Sets the player's new position
+					if((mousePoint.x >= validPoints.get(i).x && mousePoint.x < validPoints.get(i).x + 1.5*SQUARE_WIDTH) && (mousePoint.y >= validPoints.get(i).y && mousePoint.y < validPoints.get(i).y + 1.5*SQUARE_HEIGHT)) {
+						board.getCurrentPlayer().setPoint(validPoints.get(i)); // Sets the player's new position
+						System.out.println("" + validPoints.get(i+1).x + " " + validPoints.get(i+1).y + " = " + board.getBoardValue(validPoints.get(i+1)));
 						currentMoves ++; // Only want to counter valid moves.
 						BoardPanel.this.repaint();
 						break;
