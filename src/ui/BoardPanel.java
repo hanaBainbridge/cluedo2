@@ -69,7 +69,8 @@ public class BoardPanel extends JPanel {
 	private ArrayList<ImageIcon> diceIcons = new ArrayList<ImageIcon>(); // Stores the images showing the different dice face. 
 	private ArrayList<Point> startingPos = new ArrayList<Point>();
 	private Board board; // The board object which hold information about the game being played.
-	
+	private boolean setAccusation=false;
+		
 
 	/**
 	 * The constructor for the Board panel that set up the GUI for the actual game.
@@ -112,7 +113,6 @@ public class BoardPanel extends JPanel {
 			if(board.getCurrentPlayer().getRoom()!=null){
 			String character = null;
 			String weapon = null;
-			String room=board.getCurrentPlayer().getRoom().toString();
 			while(character==null){
 				character = getCharacterValue("suggestion");
 			}
@@ -129,10 +129,7 @@ public class BoardPanel extends JPanel {
 				if(i!=index){
 					boolean refutingCharacter=checkRefuting(character,players.get(i));  
 					boolean refutingWeapon=checkRefuting(weapon,players.get(i));
-					boolean refutingRoom=checkRefuting(room, players.get(i));
-				    boolean refuted=false;
-					if(refutingWeapon || refutingCharacter || refutingRoom){
-						refuted=true;
+					if(refutingWeapon || refutingCharacter){
 						String text="a player has refted your suggestion\n"
 								+ " it is now the next players turn.";
 						JPanel outcome=new JPanel();
@@ -144,8 +141,9 @@ public class BoardPanel extends JPanel {
 						break;
 						
 					}
-					else{ //if(!refuted){
-						String text="No body refuted your seggestion";
+					else{
+						String text= "player" + players.get(i).toString() +"has "
+								+ "not refutedd your seggestion";
 						JPanel outcome=new JPanel();
 						JLabel outcomeText= new JLabel(text);
 						outcome.add(outcomeText);
@@ -154,18 +152,17 @@ public class BoardPanel extends JPanel {
 				}
 			}
 		  }
-			else{
-				JOptionPane.showMessageDialog(null, "You are not in a room. You cannot make a suggestion", "invalid option!", JOptionPane.ERROR_MESSAGE);
-			}
 		});
 		// Button listener for accusation goes here.
 		actionsPanel.add(accusationBtn);
 		accusationBtn.addActionListener((ActionEvent e) -> {
+			setAccusation=true;
 			String roomA= null;
 			String weaponA= null;
 			String characterA=null;
 			while(roomA==null){
-				roomA= getRoomValue("accusation");		
+				roomA= getRoomValue("accusation");
+					
 			}
 			while(weaponA==null){
 				 weaponA= getWeaponValue("accusation");
@@ -181,14 +178,10 @@ public class BoardPanel extends JPanel {
 				JOptionPane.showMessageDialog(null, "Your accusation is correct!", "Accusaiton correct!", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else{
+				
 				Player cPlayer=board.getCurrentPlayer();
-				System.out.println("c indexx="+board.getPlayers().indexOf(cPlayer));
-			
 				cPlayer.eleimatePlayer();
-				int index=board.getPlayers().indexOf(cPlayer)+1;
-				System.out.println("next"+board.getPlayers().get(index));
-				System.out.println("status"+board.getPlayers().get(index).isEliminated());
-				System.out.println(cPlayer.isEliminated());
+				//board.removePlayer(cPlayer);
 			    JOptionPane.showMessageDialog(null, "Your assuation was incorrect!\n You are elemated from the game.", "Accusation incorrect!", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -221,19 +214,34 @@ public class BoardPanel extends JPanel {
 				JLabel endText= new JLabel(text);
 				endPanel.add(endText);	
 			}
-			
 			boolean validNextPlayer=false;
-			while(!validNextPlayer){
-				int index=board.getCurrentIndex();
-				ArrayList<Player> players= board.getPlayers();
+			int nextIndex=-4;
+			int index=board.getCurrentIndex();
+			 if(index!=(players.size()-1)){
+				   index++;
+				   }
+				    else{
+				    	index=0;
+				    }
+			ArrayList<Player> players= board.getPlayers();
+			while(!validNextPlayer){	
 			    if(!players.get(index).isEliminated()){
 			    	validNextPlayer=true;
+				    nextIndex=index;
 			    	break;
 			    }
-			 
-			    board.nextPlayer();
+			    if(index!=(players.size()-1)){
+			   index++;
+			   }
+			    else{
+			    	index=0;
+			    }
+			
 			}
-			board.nextPlayer(); // Move to the next player.
+			if(nextIndex!=-4){
+				board.setNextPlayer(nextIndex);
+			}
+		     
 			getCurrentPlayerCardImages(); // Gets the next player's cards
 			roll = false; // Allows the next player to roll.
 			rolledNums = null; // Resets the numbers rolled for the next turn 
@@ -241,26 +249,7 @@ public class BoardPanel extends JPanel {
 			if(dice1 != null) {remove(dice1);}
 			if(dice2 != null) {remove(dice2);}
 			currentMoves = 0;
-			// If the player is in a room.
-			if(board.getCurrentPlayer().getRoom() != null) {
-				ArrayList<Point> exits = board.getCurrentPlayer().getRoom().getEntryPoints();
-				Object[] possiblities = new Object[exits.size()];
-				for (int i = 0; i < possiblities.length; i++) {
-					possiblities[i] = exits.get(i).toString();
-				}
-				Object selectedValue = JOptionPane.showInputDialog(null,
-						"Please select an exit", "Select exit",
-						JOptionPane.INFORMATION_MESSAGE, null,
-						possiblities, possiblities[0]); 
-				for(Point p: exits) {
-					if(p.toString().equals(selectedValue)) {
-						board.getCurrentPlayer().setPoint(new Point(((p.x * SQUARE_WIDTH) + SQUARE_WIDTH/2), ((p.y * SQUARE_HEIGHT) + SQUARE_HEIGHT/2)));
-						board.getCurrentPlayer().setRoom(null);
-						break;
-					}
-				}
-			}
-			this.repaint();
+			this.revalidate();
 		});
 		
 		

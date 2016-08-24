@@ -352,4 +352,9 @@ public class Board {
 	public void removePlayer(Player p){
 		players.remove(p);
 	}
+
+	public void setNextPlayer(int i) {
+		currentPlayerIndex=i;
+		currentPlayer = players.get(currentPlayerIndex);
+	}
 }
